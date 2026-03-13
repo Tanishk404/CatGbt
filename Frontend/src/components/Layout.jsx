@@ -46,7 +46,7 @@ function Layout({children, searchChat, setSearchChat}) {
       
         <div className='flex items-center flex-1 overflow-hidden'>
             
-            <MobileBar titles={titles} setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} />
+            <MobileBar titles={titles} setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} setSearchChat={setSearchChat} searchChat={searchChat} />
             
             
             <SideBar searchChat={searchChat} setSearchChat={setSearchChat} titles={titles} setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} />

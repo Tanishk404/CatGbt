@@ -83,10 +83,10 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
           }}
         >
           <Search className="w-[20px]" />
-          <Link to={"/"} className={clsx(isOpen ? "block" : "hidden")}>
+          <button to={"/"} className={clsx(isOpen ? "block" : "hidden")}>
             {" "}
             Search Chat
-          </Link>
+          </button>
         </div>
 
         <div className="flex gap-2 align-middle items-center hover:bg-gray-100 p-1 rounded-lg">
