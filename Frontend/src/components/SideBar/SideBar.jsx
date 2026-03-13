@@ -53,7 +53,7 @@ function SideBar({
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get(`http://localhost:3000/titles`, {
+      .get(`https://catgbt-1.onrender.com/titles`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
