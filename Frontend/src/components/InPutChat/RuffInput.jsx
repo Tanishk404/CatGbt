@@ -1,157 +1,262 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { Paperclip, Mic, X, CircleArrowUp } from "lucide-react";
-import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import { Paperclip, Mic, X, CircleArrowUp, Pause } from "lucide-react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import SpeechRecognition, { 
+  useSpeechRecognition,
+} from "react-speech-recognition";
+
+import { OpenImgContext } from "@/context/OpenImg";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { OpenImgContext } from "@/context/OpenImg";
 
 function Input({ ChangeState, isLoading, setLoading, setMessage }) {
   const [textval, setTextVal] = useState("");
-  const { setOpenImage, mediaName, setMedia } = useContext(OpenImgContext);
-  const { id } = useParams();
-  const navigate = useNavigate();
+
+   const {openImage, setOpenImage, mediaName, setMedia } = useContext(OpenImgContext)
+
   const FileInputRef = useRef(null);
+
+
   const [removeMedia, setRemoveMedia] = useState(false);
+
   const [prevTranscript, setPrevTranscript] = useState("");
 
-  const { transcript, listening, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  const navigate = useNavigate()
+   
 
-  // Speech to Text Logic
+  const { transcript, listening, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+
+  const SpeechText = transcript.substring(prevTranscript.length).trim();
+
   useEffect(() => {
-    const speechText = transcript.substring(prevTranscript.length).trim();
-    if (speechText) {
-      setTextVal((prev) => (prev ? prev + " " + speechText : speechText));
+    if (SpeechText) {
+      setTextVal((prev) => prev + " " + SpeechText);
       setPrevTranscript(transcript);
     }
   }, [transcript, prevTranscript]);
 
-  const startListening = (e) => {
-    e.preventDefault(); // Prevent form submission
+  const startListening = () => {
     if (listening) {
       SpeechRecognition.stopListening();
-    } else {
+      SpeechRecognition.abortListening();
+      SpeechRecognition.resetTranscript();
       setPrevTranscript("");
-      SpeechRecognition.startListening({ continuous: true, language: "en-US" });
+    } else {
+      SpeechRecognition.startListening({
+        continuous: true,
+        language: "en-US",
+      });
     }
   };
+
+  if (!browserSupportsSpeechRecognition) {
+    return;
+  }
+
+  const InputHandle = (e) => {
+    const val = e.target.value;
+    setTextVal(val);
+    ChangeState(true)
+  };
+
+
+  const { id } = useParams()
 
   const HandlUserSubmit = async (e) => {
-    if (e) e.preventDefault();
-    if (!textval.trim() || isLoading) return;
-
-    const currentText = textval;
-    setTextVal(''); // Clear input immediately for better UX
-    setLoading(true);
-
-    // 1. ADD USER MESSAGE TO UI INSTANTLY (Optimistic Update)
-    const userMsg = {
-      _id: Date.now().toString(),
-      role: "user",
-      content: currentText
-    };
-    setMessage((prev) => [...prev, userMsg]);
-
-    try {
-      const respon = await axios.post(`http://localhost:3000/`, {
-        role: "user",
-        content: currentText,
-        conversationId: id
-      });
-
-      // 2. ADD AI RESPONSE TO UI (Matches your backend res.status(200).json({ data: AiResponse }))
-      if (respon.data.data) {
-        const aiMsg = {
-          _id: (Date.now() + 1).toString(),
-          role: "assistant",
-          content: respon.data.data 
-        };
-        setMessage((prev) => [...prev, aiMsg]);
-      }
-
-      // 3. Handle Navigation for new chats
-      if (!id && respon.data.conversationId) {
-        navigate(`/chat/${respon.data.conversationId}`);
-      }
-
-    } catch (error) {
-      console.error("Submission Error:", error);
-      toast.error(error.response?.data?.message || "Failed to send message");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const HandleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      HandlUserSubmit();
-    }
-  };
+      setLoading(true)
+      setTextVal('')
+      const userMsg = {
+        _id: Date.now().toString(),
+        role: "user",
+        content: textval
+      }
+
+
+  const aiMsg = {
+    _id: (Date.now()+1).toString(),
+    role: "assistant",
+    content: ""
+  }
+
+
+      setMessage((prev) => [...prev, userMsg, aiMsg])
+
+      
+      try {
+        
+        const token = localStorage.getItem('token')
+        console.log(token)
+
+
+        const res = await fetch(`http://localhost:3000/`,{
+            method: 'POST',
+            headers: {
+              "Content-Type": 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            
+            body: JSON.stringify({
+              role: "user",
+              content: textval,
+              conversationId:id
+      
+            }),
+          } 
+    )
+
+
+
+    const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+
+  let aiText = "";
+
+  while (true) {
+
+    const { done, value } = await reader.read();
+
+    if (done) break;
+
+    const chunk = decoder.decode(value);
+
+    aiText += chunk;
+
+    setMessage(prev => {
+      const copy = [...prev];
+      copy[copy.length - 1].content = aiText;
+      return copy;
+    });
+
+  }
+
+        
+      } catch (error) {
+        console.log(error.message)
+
+        toast.error(error.response.data.message)
+
+
+      } finally{
+        setLoading(false)
+      }
+  }
+
+
+
+
+
+const HandleKeyDown = (e) => {
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault()
+    if(isLoading) return;
+
+    HandlUserSubmit(e);
+  }
+}
+
+
+
 
   const MediaInputHandle = (e) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files[0];
     if (file) {
       setMedia({
-        url: URL.createObjectURL(file),
-        fileName: file.name,
-        fileType: file.type
+        url : URL.createObjectURL(file),
+        fileName : file.name,
+        fileType : file.type
+
       });
     }
   };
 
   const RemoveOnClick = () => {
-    if (mediaName?.url) URL.revokeObjectURL(mediaName.url);
-    setMedia(null);
-    if (FileInputRef.current) FileInputRef.current.value = "";
-  };
+      setMedia(null);
+      if(FileInputRef.current){
+          FileInputRef.current.value = ""
+        }
+    };
 
-  if (!browserSupportsSpeechRecognition) {
-    return <div className="text-red-500">Browser does not support speech recognition.</div>;
-  }
+useEffect(() => {
+  if (!mediaName) return;
+
+  return () => {
+    URL.revokeObjectURL(mediaName);
+  };
+}, [mediaName]);
+
+const PreviewFullImg = () => {
+    setOpenImage(true)
+
+}
+
 
   return (
-    <div className="flex rounded-md flex-col justify-center w-full sticky max-w-[42rem] bottom-0 items-center focus-within:ring-1 focus-within:ring-black focus-within:border-black bg-white shadow-lg">
-      
-      {/* Media Preview Section */}
-      {mediaName && (
-        <div className="bg-white w-full h-24 p-2 rounded-t-lg border-b">
-          <div className="rounded-lg w-20 h-20 items-center flex justify-center relative">
-            <button
-              onClick={RemoveOnClick}
-              className="absolute -right-2 -top-2 z-40 h-5 w-5 bg-white border rounded-full flex items-center justify-center hover:bg-gray-100"
+    <>
+    
+
+   
+      <div className="flex rounded-md flex-col justify-center w-full sticky max-w-[42rem] bottom-0 items-center focus-within:ring-1 focus-within:ring-black focus-within:border-black bg-white">
+        {/* This Is Media (Images, Pngs etc) Div */}
+        <div
+          className={clsx(
+            "bg-white w-full h-24 p-2 rounded-t-lg",
+            mediaName ? "block" : "hidden",
+          )}
+        >
+          <div className="rounded-lg  w-20 h-20 items-center flex justify-center hover:border-gray-100 relative">
+            <small
+              className={clsx(
+                "bg-gray-100 -top-6 -right-6 z-50 absolute text-xs w-20",
+                removeMedia && removeMedia ? "block" : "hidden",
+              )}
             >
-              <X className="h-3 w-3" />
+              Remove file
+            </small>
+            <button
+              onMouseEnter={() => setRemoveMedia(true)}
+              onMouseLeave={() => setRemoveMedia(false)}
+              onClick={RemoveOnClick}
+              className="absolute right-0 top-0 z-40 h-4 w-4 text-center items-center flex justify-center bg-white rounded-full "
+            >
+              <X className="h-4 w-4 shadow-lg" />
             </button>
-            {mediaName.fileType.startsWith("image/") && (
-              <img
-                className="border object-cover border-gray-300 rounded-lg h-full w-full cursor-pointer"
-                src={mediaName.url}
-                alt="preview"
-                onClick={() => setOpenImage(true)}
-              />
-            )}
+
+            <div className="absolute bg-cover bg-center h-full w-full hover:bg-white opacity-25 cursor-pointer" onClick={PreviewFullImg}></div>
+            {
+                mediaName?.fileType.startsWith("image/") && (
+                        <img
+                          className="border object-cover border-gray-900 rounded-lg h-full w-full "
+                          src={mediaName.url}
+                          alt=""
+                        /> 
+                        
+                        
+                    )  
+            }
+
           </div>
         </div>
-      )}
+    <form className="w-full">
 
-      <form onSubmit={HandlUserSubmit} className="w-full">
         <textarea
           name="userinput"
           value={textval}
-          onChange={(e) => setTextVal(e.target.value)}
+          onChange={InputHandle}
           onBlur={() => ChangeState(false)}
-          onFocus={() => ChangeState(true)}
-          onKeyDown={HandleKeyDown}
-          rows={2}
-          className="text-sm leading-tight resize-none w-full rounded-t-md overflow-y-auto h-20 outline-none pt-3 px-4"
-          placeholder="Type or speak your message..."
-        />
         
-        <div className="flex justify-between items-center px-4 py-2 mb-1">
-          <div className="flex gap-1 items-center">
-            <label className="cursor-pointer p-2 hover:bg-gray-100 rounded-full transition-colors" htmlFor="file_input">
+          onKeyDown={HandleKeyDown}
+          aria-activedescendant={1}
+          rows={2}
+          className="text-sm leading-tight resize-none w-full rounded-t-md overflow-y-auto h-20 outline-none pt-2 pl-2"
+          placeholder="Type or speack your message..."
+          id=""
+        ></textarea>
+        <div className="flex justify-between w-full h-3 pb-5 px-4 py-2 mb-1 rounded-b-md">
+          <div className="flex gap-3 items-center">
+            <label className="cursor-pointer" htmlFor="file_input">
               <input
                 ref={FileInputRef}
                 className="hidden"
@@ -160,38 +265,45 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
                 accept="image/*"
                 onChange={MediaInputHandle}
               />
-              <Paperclip className="text-gray-500 h-5 w-5" />
+
+              <Paperclip className="text-gray-500 h-4" />
             </label>
 
             <button
-              type="button"
+            type="button"
               className={clsx(
-                "p-2 rounded-full transition-colors",
-                listening ? "bg-red-100 text-red-600 animate-pulse" : "hover:bg-gray-100 text-gray-500"
+                "h-10 w-10 flex items-center justify-center",
+                listening ? "bg-gray-300 rounded-full" : "",
               )}
               onClick={startListening}
             >
-              <Mic className="h-5 w-5" />
+              {
+                listening ?           <Pause className="text-gray-500 h-4" /> : <Mic className="text-gray-500 h-4" />
+              }
+    
             </button>
           </div>
 
           <div className="flex gap-4 items-center">
-            <small className="text-gray-400 font-medium">Gemini 1.5 Flash</small>
+            <small>Cat 1.0</small>
             <button
               type="submit"
-              disabled={!textval.trim() || isLoading}
-              className="disabled:opacity-30 disabled:grayscale transition-all transform active:scale-95"
+              onClick={HandlUserSubmit}
+              disabled={isLoading || !textval?.trim() 
+               }
+              className="disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <CircleArrowUp
                 strokeWidth={1.2}
-                fill={textval.trim() ? "#000" : "#ccc"}
-                className="text-white h-9 w-9"
+                fill={textval.trim() ? "#000" : "gray"}
+                className="text-white h-9 w-9 border-none outline-none font-extralight text-xs"
               />
             </button>
           </div>
         </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 }
 

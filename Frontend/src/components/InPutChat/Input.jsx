@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Paperclip, Mic, X, CircleArrowUp } from "lucide-react";
+import { Paperclip, Mic, X, CircleArrowUp, Pause } from "lucide-react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import SpeechRecognition, { 
   useSpeechRecognition,
@@ -129,6 +129,8 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
 const HandleKeyDown = (e) => {
   if(e.key === 'Enter' && !e.shiftKey){
     e.preventDefault()
+    if(isLoading) return;
+
     HandlUserSubmit(e);
   }
 }
@@ -246,24 +248,27 @@ const PreviewFullImg = () => {
             </label>
 
             <button
+            type="button"
               className={clsx(
                 "h-10 w-10 flex items-center justify-center",
                 listening ? "bg-gray-300 rounded-full" : "",
               )}
               onClick={startListening}
             >
-              <Mic className="text-gray-500 h-4" />
+              {
+                listening ?           <Pause className="text-gray-500 h-4" /> : <Mic className="text-gray-500 h-4" />
+              }
+    
             </button>
           </div>
 
           <div className="flex gap-4 items-center">
-            <small>Claude 3.5</small>
+            <small>Cat 1.0</small>
             <button
               type="submit"
               onClick={HandlUserSubmit}
               disabled={isLoading || !textval?.trim() 
-                &&
-                !isLoading}
+               }
               className="disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <CircleArrowUp

@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt'
 import { UserModel } from '../models/AuthSchema.js';
 import jwt from 'jsonwebtoken'
-
+import Bytez from 'bytez.js';
 
 export const HandelDefaultRoute = async (req, res) => {
     try {
@@ -59,8 +59,10 @@ export const GetHome = async (req, res) => {
         // const file = req.files;
 
         // console.log(file)
+
+    let chatTitle = null;  
   
-    if(!content){
+if(!content){
         return res.status(400).json({
             message: "data not get"
         })
@@ -69,9 +71,19 @@ export const GetHome = async (req, res) => {
     let convId = conversationId;
 
     if(!convId){
+const key = process.env.BYTEZ_KEY
+const sdk = new Bytez(key)
+const model = sdk.model("openai/gpt-4o-mini")
+const { error, output } = await model.run([
+  {
+    "role": "user",
+    "content": `Create a short chat title (max 5 words) from this message:\n${content}\nOnly return the title without quotes.`
+  }
+])
+    console.log(output)
         const newconversationalId = await TitleModel.create({
             userId: req.userId,
-            title: content ? content.substring(0, 30) : 'new chat'
+            title: output ? output.content.substring(0, 30) : 'new chat'
         })
 
         convId = newconversationalId._id;
@@ -86,24 +98,47 @@ export const GetHome = async (req, res) => {
     })
 
 
-    const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+    // const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
  
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: content,
-      });
-      const AiResponse = response.text;
+    //   const response = await ai.models.generateContent({
+    //     model: 'gemini-2.5-flash',
+    //     contents: {
+    //         chattitle: 'create a short title for ai and user chat',
+    //         content,
 
-      console.log(AiResponse)
+    //     },
+    //   });
+    //   const AiResponse = response.text;
+
+
+
+
+
+const key = process.env.BYTEZ_KEY
+const sdk = new Bytez(key)
+
+// choose gpt-4o-mini
+const model = sdk.model("openai/gpt-4o-mini")
+
+// send input to model
+const { error, output } = await model.run([
+  {
+    "role": "user",
+    "content": content
+  }
+])
+
+
+
 
 
       await Conversationmodel.create({
           conversationId: convId,
           role: 'assistant',
-          content: response.text
+          content: output.content
       })
 
-
+    const AiResponse = output.content
 
     res.status(200).json({
         data: AiResponse,
@@ -115,10 +150,9 @@ export const GetHome = async (req, res) => {
         
     } catch (error) {
         console.log(error.message)
-        if(!message&&errorcode) return;
  
         res.status(400).json({
-            message: 'Invalid Api key',
+            message: 'Today request quota exceed',
             
         })
 
@@ -158,14 +192,15 @@ export const GetTitles = async (req, res) => {
 
 export const RenameTitle = async (req, res) => {
     const currentUser = req.userId
-    console.log("Ye hai current user", currentUser)
+
 
     try {
         const {id} = (req.params)
         const {title} = req.body
 
 
-      
+      if(!currentUser) return null;
+
         await TitleModel.findByIdAndUpdate(id, {title})
         
         res.status(200).json({
@@ -184,11 +219,12 @@ export const RenameTitle = async (req, res) => {
 
 export const DeleteChat = async (req, res) => {
         const currentUser = req.userId
-    console.log("Ye hai current user", currentUser)
+
     
     try {
         const {id} = (req.params)
 
+        if(!currentUser) return null
       
         await TitleModel.findByIdAndDelete(id)
         const conv =  await Conversationmodel.deleteMany({conversationId: id})

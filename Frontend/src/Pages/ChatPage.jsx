@@ -15,6 +15,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import SearchChat from "@/components/SearchChat";
 import CatLoading from "@/components/CatAnimate/CatLoading";
 import { toast, ToastContainer } from "react-toastify";
+import MiniDashBoard from "@/components/MiniDashBoard/MiniDashBoard";
+
 function ChatPage() {
   const { id } = useParams()
   const navigate = useNavigate()

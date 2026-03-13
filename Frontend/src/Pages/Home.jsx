@@ -38,6 +38,8 @@ function Home() {
 
   const [Animate, setAnimate] = useState(null);
 
+      const [dashBoard, setDashBoard] = useState(false)
+
 
   const {theme, setTheme} = useContext(ThemeContext)
 
@@ -70,18 +72,23 @@ function Home() {
 
 
         <div className='flex items-center flex-1 max-h-screen h-full overflow-hidden'>
-            
-            <MobileBar searchChat={searchChat} setSearchChat={setSearchChat} titles={titles} setTitles={setTitles} />
-            
+
+              
             
             <SideBar 
               titles={titles}
               setTitles={setTitles}
               searchChat={searchChat}
               setSearchChat={setSearchChat}
+              dashBoard={dashBoard}
+              setDashBoard={setDashBoard}
               />
 
-                  <MiniDashBoard />
+            <MobileBar searchChat={searchChat} setSearchChat={setSearchChat} titles={titles} setTitles={setTitles} setDashBoard={setDashBoard} dashBoard={dashBoard} />
+            
+            
+
+                  <MiniDashBoard setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} />
         
         
             <div className='w-full flex-1 flex flex-col justify-center text-center'>

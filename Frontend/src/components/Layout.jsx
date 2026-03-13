@@ -19,11 +19,16 @@ import OverLay from '../Pages/OverLay'
 import SearchChat from './SearchChat'
 
 import { TitleContext } from '@/context/TitleContextComp'
+import MiniDashBoard from './MiniDashBoard/MiniDashBoard'
+import clsx from 'clsx'
 
 function Layout({children, searchChat, setSearchChat}) {
 
   const [state, ChangeState] = useState(false)
   const {titles, setTitles} = useContext(TitleContext)
+
+  const [dashBoard, setDashBoard] = useState(false)
+
   return (
     <SidebarProvider>
       <OpenImg>
@@ -41,12 +46,12 @@ function Layout({children, searchChat, setSearchChat}) {
       
         <div className='flex items-center flex-1 overflow-hidden'>
             
-            <MobileBar titles={titles} setTitles={setTitles} />
+            <MobileBar titles={titles} setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} />
             
             
-            <SideBar searchChat={searchChat} setSearchChat={setSearchChat} titles={titles} setTitles={setTitles} />
+            <SideBar searchChat={searchChat} setSearchChat={setSearchChat} titles={titles} setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} />
         
-        
+            <MiniDashBoard dashBoard={dashBoard} setDashBoard={setDashBoard} />
             <div className='w-full flex flex-col justify-center text-center'>
                 <div className=''>
     

@@ -18,6 +18,7 @@ function DeleteAndRename({children}) {
 
     
     const token = localStorage.getItem("token")
+
         const HandleRename = async (chatId) => {
     
           if(!RenameValue.trim()) return;
@@ -27,10 +28,14 @@ function DeleteAndRename({children}) {
             console.log(token)
             
             await axios.put(`http://localhost:3000/titles/${chatId}`, {
-                title: RenameValue,
-                token
+                title: RenameValue
+            },
+            {
+                headers : {
+                    Authorization : `Bearer ${token}`
+                }}
                
-            })
+            )
     
             setTitles((prev) =>
                 prev.map((item) =>

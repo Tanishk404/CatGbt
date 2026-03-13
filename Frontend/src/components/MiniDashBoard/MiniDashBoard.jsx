@@ -1,9 +1,14 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext,useState, useEffect } from 'react'
 import { UserCont } from '@/context/UserContext'
 import { useNavigate } from 'react-router-dom'
-function MiniDashBoard() {
+import clsx from 'clsx'
+
+
+function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
     const navigate = useNavigate()
     const {isUser, setIsUser, Isavatar, setAvatar} = useContext(UserCont)
+
+
 
     const avatarUrl = `https://ui-avatars.com/api/?name=${Isavatar}&length=1&background=000000&color=ffffff&size=256&rounded=true`
     
@@ -17,11 +22,15 @@ function MiniDashBoard() {
 
     const LogOut = () => {
         localStorage.removeItem('token')
-        navigate('/user/login');
+        setIsUser(null)
+        setTitles([])
+        setTimeout(() => {
+            navigate('/user/login');
+        }, 1000)
     }
   return (
-    <div className='absolute p-10'>
-    <div className='h-36 bg-gray-300 shadow-lg p-1 w-36 absolute z-50 rounded-xl top-40'>
+    <div className={clsx('absolute p-10 ', dashBoard&&isUser ? 'block': 'hidden')}>
+    <div className='h-36 bg-gray-300 shadow-lg p-1 w-36 absolute z-[100] rounded-xl top-40'>
         {
             isUser?.map((v, i) => {
                 return(

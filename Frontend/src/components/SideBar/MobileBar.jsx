@@ -1,8 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 import { SidebarContext } from "../../context/SidebarContext";
-
-import { useContext, useState } from "react";
+import MiniDashBoard from "../MiniDashBoard/MiniDashBoard";
+import { useContext, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   Images,
@@ -18,12 +18,22 @@ import {
 import { DeleteAndRenameContext } from "@/context/DeleteAndRename";
 import { UserCont } from "@/context/UserContext";
 
-function MobileBar({ titles, setSearchChat, searchChat }) {
+function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard }) {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
+ 
 
-  const {isUser, setIsUser} = useContext(UserCont)
+  const {isUser, setIsUser, Isavatar, setAvatar} = useContext(UserCont)
 
   const { id: ActiceId } = useParams();
+
+
+   const avatarUrl = `https://ui-avatars.com/api/?name=${Isavatar}&length=1&background=000000&color=ffffff&size=256&rounded=true`;
+  
+    useEffect(() => {
+      isUser?.map((v, i) => {
+        return setAvatar(v.username);
+      });
+    }, [isUser]);
 
   const {
     ThreeDot,
@@ -41,7 +51,7 @@ function MobileBar({ titles, setSearchChat, searchChat }) {
   return (
     <div
       className={clsx(
-        "bg-[rgb(235, 232, 232)] h-full sm:hidden lg:hidden md:hidden xl:hidden border-r-2 border-gray-300 overflow-y-auto",
+        "bg-[rgb(235, 232, 232)] h-full sm:hidden lg:hidden md:hidden xl:hidden border-r-2 border-gray-300 overflow-y-auto overflow-x-hidden",
         isOpen
           ? "w-56 absolute z-50 bg-[#EBE8E8] transition-all ease-in"
           : "w-0 sm:w-[70px] md:w-[70px] lg:w-[70px] overflow-x-hidden transition ease-in-out",
@@ -54,7 +64,7 @@ function MobileBar({ titles, setSearchChat, searchChat }) {
             setIsOpen(!isOpen);
           }}
         >
-          {isOpen ? <PanelRightOpen /> : <PanelRightClose />}
+          {isOpen ? <PanelRightOpen className="cursor-pointer" /> : <PanelRightClose className="cursor-pointer" />}
         </div>
 
         <small className={clsx(isOpen ? "block" : "hidden")}>DASHBOARD</small>
@@ -90,7 +100,7 @@ function MobileBar({ titles, setSearchChat, searchChat }) {
 
       <div className={clsx(isOpen ? "block" : "hidden")}>
         <small className="ml-2">Chats</small>
-        <div className="ml-2 flex-col flex gap-2 h-full  px-2 space-y-3 mb-4">
+        <div className="ml-2 flex-col flex gap-2 h-full  px-2 space-y-3 mb-[100px]">
           {titles?.length > 0 ? (
             titles &&
             titles.map((v, i) => {
@@ -129,13 +139,13 @@ function MobileBar({ titles, setSearchChat, searchChat }) {
                     />
 
                     {Rename && Rename === v._id ? null : (
-                      <Link className=" w-full" to={`/chat/${v._id}`}>
+                      <Link className=" w-full truncate" to={`/chat/${v._id}`}>
                         <span className="truncate">{v.title}</span>
                       </Link>
                     )}
                     <div
                       className={clsx(
-                        "bg-[#ebe8e8] shadow-md h-[100px] pt-4 p-2 flex-col mt-5 rounded-lg w-[120px]  text-start items-start absolute gap-2 right-0",
+                        "bg-[#ebe8e8] shadow-md h-[100px] pt-4 p-2 flex-col mt-5 rounded-lg w-[120px] z-40 text-start items-start absolute gap-2 right-0",
                         menuId === v._id ? "flex" : "hidden",
                       )}
                     >
@@ -181,31 +191,41 @@ function MobileBar({ titles, setSearchChat, searchChat }) {
       {/* <hr className='h-[3px] bg-gray-300 m-2' /> */}
       <div
         className={clsx(
-          "fixed  bg-[rgb(235,232,232)] flex items-center gap-2 p-2",
+          "fixed  bg-[rgb(235,232,232)] w-52 flex items-center gap-2 p-2 hover:bg-white cursor-pointer",
           isOpen ? "bottom-0" : "top-full",
         )}
+         onClick={() => setDashBoard(!dashBoard)}
       >
-        { isUser === true ? (
+                  {isUser ? (
+                    isUser.map((v, i) => {
+                      return (
                         <>
-                            <p className='ml-2 bg-black h-8 w-8 rounded-full text-white text-center text-lg'>
-                            T
-                            </p>
-                            <p className={clsx(isOpen ? "block": "hidden")}>Tanishk Rajput</p> 
+                          {/* <p className='ml-2 bg-black h-8 w-8 rounded-full text-white text-center text-lg'>
+                              T
+                              </p> */}
+                          <img src={avatarUrl} className="h-8 w-8" alt="" />
+                          <p className={clsx(isOpen ? "block" : "hidden")}>
+                            {v.username}
+                          </p>
                         </>
-                    )
-        
-                    :
-       
-                           isOpen ? (
-                           
-                               <div className='flex gap-2 text-center items-center'>
-                               <CircleUserRound strokeWidth={1} className='w-10 cursor-pointer h-10' />
-                               <Link to={"/user/login"} >Login</Link>
-                           </div>
-                       
-                       ) :  <Link to={"/user/login"}>
-                       <CircleUserRound strokeWidth={1} className='w-10 cursor-pointer h-10' /></Link>
-                       }
+                      );
+                    })
+                  ) : isOpen ? (
+                    <div className="flex gap-2 text-center items-center">
+                      <CircleUserRound
+                        strokeWidth={1}
+                        className="w-10 cursor-pointer h-10"
+                      />
+                      <Link to={"/user/login"}>Login</Link>
+                    </div>
+                  ) : (
+                    <Link to={"/user/login"}>
+                      <CircleUserRound
+                        strokeWidth={1}
+                        className="w-10 cursor-pointer h-10"
+                      />
+                    </Link>
+                  )}
       </div>
     </div>
   );
