@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserCont } from '@/context/UserContext'
 import clsx from 'clsx'
+import CatLoading from '../CatAnimate/CatLoading'
 
 function UserDash() {
 
@@ -22,6 +23,7 @@ function UserDash() {
         formData.append('image', imgState)
         formData.append('updatedname', Input) 
         const token = localStorage.getItem('token')
+        setLoading(true)
             try {
                 const response =  await axios.post('http://localhost:3000/user/dashboard',formData, {
                     headers: {
@@ -31,7 +33,6 @@ function UserDash() {
                 })
                 setHideUserDashBoard(false)
 
-                setLoading(true)
 
                 setState('This is a Main Response',response.data.checkAvatar)
 
@@ -85,18 +86,21 @@ function UserDash() {
 
   return (
     <>
-            {
-                loading ? <p className='bg-red-400 text-2xl'>...loading</p> : null
-            }
+         {
+            loading ?<div className='z-[100] flex items-center justify-center'>
+                <CatLoading /> 
+            </div>: null 
+         }
+            
       <div className={clsx('w-full flex justify-center absolute z-50 bg-black/50 h-full overflow-hidden left-0 top-0 p-2', hideUserDashboard ? 'flex': 'hidden')}>
         <div className='bg-white shadow-2xl w-96 h-96 top-20 flex flex-col justify-center rounded-xl items-center relative'>
         <form className='w-full flex flex-col items-center ' onSubmit={HandleUpdate}>
-            <label htmlFor="userImage" className='flex bg-blue-500 w-24 relative rounded-full h-24 -top-10'>
+            <label htmlFor="userImage" className='flex w-24 relative rounded-full h-24 -top-10'>
                 
             <input onChange={handleUserImage} className='opacity-0 h-32 -mt-10 w-32 rounded-full' id='userImage' name='userImage' type="file" accept='image/*' />
 
        
-                        <img src={url || state?.avatar}  className='h-24 w-24 rounded-full object-cover  bg-blue-500 text-1xl absolute' alt='avatar' />
+                        <img src={url || state?.avatar}  className='h-24 w-24 rounded-full object-cover border text-1xl absolute' alt='avatar' />
 
     
     
