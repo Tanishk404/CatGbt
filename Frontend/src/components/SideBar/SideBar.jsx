@@ -44,7 +44,7 @@ function SideBar({
     setOpenMenuId,
   } = useContext(DeleteAndRenameContext);
 
-  const { isUser, setIsUser, Isavatar, setAvatar } = useContext(UserCont);
+  const { isUser, setIsUser, Isavatar, setAvatar,refreshUser,hideUserDashboard, setHideUserDashBoard } = useContext(UserCont);
 
   const [focus, setFocus] = useState(false);
 
@@ -70,7 +70,7 @@ function SideBar({
       .catch((er) => {
         console.log("Error from Side bar : ", er);
       });
-  }, []);
+  }, [refreshUser]);
 
   const avatarUrl = `https://ui-avatars.com/api/?name=${Isavatar}&length=1&background=000000&color=ffffff&size=256&rounded=true`;
 
@@ -194,7 +194,9 @@ function SideBar({
                             e.preventDefault();
                             setRename(v._id);
                           }}
-                          className="flex justify-start items-start  gap-2 text-center cursor-pointer"
+                          className="flex hover:bg-white
+                                    p-1 rounded-lg
+                                    w-full justify-start items-start  gap-2 text-center cursor-pointer"
                         >
                           <Pencil className="h-4 w-4" /> Rename
                         </small>
@@ -202,6 +204,9 @@ function SideBar({
                           onClick={() => HandleDeleteChat(v._id, ActiceId)}
                           className="flex
                                     gap-2
+                                    hover:bg-white
+                                    p-1 rounded-lg
+                                    w-full
                                     text-red-700 items-center text-center cursor-pointer"
                         >
                           <Trash className="h-4 w-4" />
@@ -244,16 +249,19 @@ function SideBar({
           "sticky bg-[rgb(235,232,232)] flex items-center gap-2 p-2 cursor-pointer md:overflow-x-hidden  hover:bg-white",
           isOpen && titles.length > 9 ? "bottom-0 " : "top-full",
         )}
-        onClick={() => setDashBoard(!dashBoard)}
+        onClick={() => setDashBoard(!dashBoard)
+          
+        }
       >
         {isUser ? (
           isUser.map((v, i) => {
+
             return (
               <>
                 {/* <p className='ml-2 bg-black h-8 w-8 rounded-full text-white text-center text-lg'>
                     T
                     </p> */}
-                <img src={avatarUrl} className="h-8 w-8" alt="" />
+                <img src={v.avatar || avatarUrl } className="h-8 rounded-full w-8" alt="" />
                 <p className={clsx(isOpen ? "block" : "hidden")}>
                   {v.username}
                 </p>

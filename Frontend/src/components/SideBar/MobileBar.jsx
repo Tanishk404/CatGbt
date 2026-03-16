@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import clsx from "clsx";
 import { SidebarContext } from "../../context/SidebarContext";
 import MiniDashBoard from "../MiniDashBoard/MiniDashBoard";
@@ -20,6 +20,8 @@ import { UserCont } from "@/context/UserContext";
 
 function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard }) {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
+
+
  
 
   const {isUser, setIsUser, Isavatar, setAvatar} = useContext(UserCont)
@@ -36,8 +38,6 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
     }, [isUser]);
 
   const {
-    ThreeDot,
-    setThreeDot,
     Rename,
     setRename,
     RenameValue,
@@ -47,6 +47,8 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
     menuId,
     setOpenMenuId,
   } = useContext(DeleteAndRenameContext);
+
+  const [ThreeDot, setThreeDot] = useState(true)
 
   return (
     <div
@@ -62,6 +64,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
           className="w-full flex justify-end"
           onClick={() => {
             setIsOpen(!isOpen);
+            setDashBoard(false)
           }}
         >
           {isOpen ? <PanelRightOpen className="cursor-pointer" /> : <PanelRightClose className="cursor-pointer" />}
@@ -107,12 +110,8 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
               return (
                 <>
                   <div
-                    onMouseEnter={() => {
-                      setThreeDot(v._id);
-                    }}
-                    onMouseLeave={() => {
-                      setThreeDot(null);
-                    }}
+            
+         
                     to={`/chat/${v._id}`}
                     key={v._id}
                     className="hover:bg-gray-100 p-1 flex rounded-lg text-start  justify-between "
@@ -154,7 +153,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                           e.preventDefault();
                           setRename(v._id);
                         }}
-                        className="flex justify-start items-start  gap-2 text-center cursor-pointer"
+                        className="flex justify-start items-start hover:bg-white p-[2px] rounded-lg w-full gap-2 text-center cursor-pointer"
                       >
                         <Pencil className="h-4 w-4" /> Rename
                       </small>
@@ -162,7 +161,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                         onClick={() => HandleDeleteChat(v._id, ActiceId)}
                         className="flex
                                                         gap-2
-                                                        text-red-700 items-center text-center cursor-pointer"
+                                                        text-red-700 items-center text-center cursor-pointer hover:bg-white p-[2px] rounded-lg w-full"
                       >
                         <Trash className="h-4 w-4" />
                         Delete
@@ -170,8 +169,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                     </div>
                     <Ellipsis
                       className={clsx(
-                        " text-gray-500 cursor-pointer",
-                        ThreeDot == v._id ? "block" : "hidden",
+                        " text-gray-500 cursor-pointer block",
                       )}
                       onClick={(e) => {
                         e.preventDefault();
@@ -203,7 +201,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                           {/* <p className='ml-2 bg-black h-8 w-8 rounded-full text-white text-center text-lg'>
                               T
                               </p> */}
-                          <img src={avatarUrl} className="h-8 w-8" alt="" />
+                          <img src={v.avatar || avatarUrl} className="h-8 rounded-full w-8" alt="" />
                           <p className={clsx(isOpen ? "block" : "hidden")}>
                             {v.username}
                           </p>

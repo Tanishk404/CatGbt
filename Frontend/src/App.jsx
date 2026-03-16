@@ -12,11 +12,14 @@ import DeleteAndRename from './context/DeleteAndRename'
 import UserContext from './context/UserContext'
 import Login from './Pages/Login'
 import SignUp from './Pages/SignUp'
+import OffToggle from './context/OffToggle'
 
 function App() {
   
   return (
     <Theme>
+      <OffToggle>
+
       <UserContext>
 
       <TitleContextComp>
@@ -45,6 +48,7 @@ function App() {
     </DeleteAndRename>
       </TitleContextComp>
       </UserContext>
+      </OffToggle>
     </Theme>
   )
 }

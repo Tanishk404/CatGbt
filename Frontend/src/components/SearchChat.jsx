@@ -28,7 +28,12 @@ function SearchChat({searchChat, setSearchChat}) {
 
 
   return (
-    <div className={clsx('bg-[rgb(236,233,233)] overflow-y-hidden z-[100] w-full max-w-[30rem] absolute overflow-hidden h-full md:max-h-[25rem] shadow-lg lg:max-h-[25rem] mt-20 rounded-lg pb-10 p-1',
+    <div className={clsx('justify-center flex w-screen h-screen bg-black/50 absolute top-0 left-0 z-[100] p-2 overflow-hidden',searchChat ? 'block': 'hidden' )}> 
+
+
+
+
+    <div className={clsx('bg-[rgb(236,233,233)] overflow-y-hidden z-[100] w-full max-w-[30rem] absolute overflow-hidden h-full md:max-h-[25rem] shadow-lg lg:max-h-[25rem mt-20 rounded-lg pb-10 p-1',
       searchChat ? 'block': 'hidden'
     )}>
       <button onClick={() => {setSearchChat(!searchChat)}} className='rounded-full absolute right-0 cursor-pointer' >
@@ -54,6 +59,7 @@ function SearchChat({searchChat, setSearchChat}) {
           }
         </div>
     </div>
+            </div>
   )
 }
 

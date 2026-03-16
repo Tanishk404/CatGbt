@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import Layout from "../components/Layout";
 
 import Input from "@/components/InPutChat/Input";
@@ -16,6 +16,7 @@ import SearchChat from "@/components/SearchChat";
 import CatLoading from "@/components/CatAnimate/CatLoading";
 import { toast, ToastContainer } from "react-toastify";
 import MiniDashBoard from "@/components/MiniDashBoard/MiniDashBoard";
+import { ToggleContext } from "@/context/OffToggle";
 
 function ChatPage() {
   const { id } = useParams()
@@ -24,6 +25,37 @@ function ChatPage() {
   const [state, ChangeState] = useState(false);
   const [isLoading, setLoading] = useState(null)
   const [exceedError, setEceedError] = useState(null)
+
+
+
+
+
+  const [dashBoard, setDashBoard] = useState(false)
+
+  const refDash = useContext(ToggleContext)
+  useEffect(() => {
+  
+    const handleClickOutside = (e) => {
+      setDashBoard(false)
+  
+    }
+  
+    document.addEventListener("mousedown", handleClickOutside)
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  
+  }, [])
+  
+
+
+
+
+
+
+
+
   
 
   useEffect(() => {
@@ -76,7 +108,7 @@ function ChatPage() {
 
     <ToastContainer />
 
-      <div className="h-dvh flex justify-center ">
+      <div  className="h-dvh flex justify-center">
         
         <SearchChat searchChat={searchChat} setSearchChat={setSearchChat} />
 
@@ -84,7 +116,7 @@ function ChatPage() {
         
 
 
-    <div className="w-full flex justify-center"> 
+    <div className="w-full flex justify-center "> 
         <div ref={AutoScroll} className="w-full max-w-[50rem] flex items-center flex-1
          bg-slate-100 overflow-y-scroll h-full flex-col pb-48 pt-36">
 

@@ -6,7 +6,12 @@ import bcrypt from 'bcrypt'
 import { UserModel } from '../models/AuthSchema.js';
 import jwt from 'jsonwebtoken'
 import Bytez from 'bytez.js';
+import configureCloudinary from '../config/cloudinary.js';
 
+
+
+
+ 
 export const HandelDefaultRoute = async (req, res) => {
     try {
         const {id} = req.params;
@@ -249,6 +254,11 @@ export const DeleteChat = async (req, res) => {
 
 
 
+
+
+
+
+
 export const SignUp = async (req, res) => {
     try {
         const {fullname, emailid, password} = req.body
@@ -321,6 +331,69 @@ export const Login = async (req, res) => {
     catch (error) {
         console.log(error.message)
     }
+}
+
+
+
+
+
+
+
+
+export const GetUserDashboard = async (req, res) => {
+    try {
+        const userId = req.userId
+        const user = await UserModel.findById(userId)
+        res.status(200).json({user})
+    } catch (error) {
+        res.status(400).json({
+            message: 'Failed to get user data'
+        })
+        console.log(error)
+    }
+}
+
+
+
+export const UserDashBoard = async (req, res) => {
+    try {
+        const { updatedname } = req.body
+        const userId = req.userId;
+        let imageUrl = null;
+
+        if(req.file){
+            const cloudinary = configureCloudinary()
+            const filepath = req.file.path
+            const result = await cloudinary.uploader.upload(filepath, {
+                folder: 'avatars'
+            })
+
+            imageUrl = result.secure_url;
+        }
+
+        const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+            ...(updatedname && {username: updatedname}),
+            ...(imageUrl && {avatar: imageUrl}),
+            
+        },
+        {new: true}
+    )
+
+    res.status(200).json({
+            message: 'data saved successfully',
+            user: updatedUser   
+        })
+
+        
+    } catch (error) {
+        res.status(400).json({
+            message: 'Failed to save data'
+
+        })
+
+        console.log(error.message)
+    }
+
 }
 
 
