@@ -64,7 +64,7 @@ function UserDash() {
         const fun = async () =>{
             const token = localStorage.getItem('token')
             try {
-                const res = await axios.get("http://localhost:3000/user/dashboard", {
+                const res = await axios.get("https://catgbt-1.onrender.com/user/dashboard", {
     headers: { Authorization: `Bearer ${token}` }
 })
 
