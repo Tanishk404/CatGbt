@@ -25,7 +25,7 @@ function UserDash() {
         const token = localStorage.getItem('token')
         setLoading(true)
             try {
-                const response =  await axios.post('http://localhost:3000/user/dashboard',formData, {
+                const response =  await axios.post("https://catgbt-1.onrender.com/user/dashboard",formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${token}`
