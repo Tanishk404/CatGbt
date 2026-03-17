@@ -357,105 +357,43 @@ export const GetUserDashboard = async (req, res) => {
 
 export const UserDashBoard = async (req, res) => {
     try {
-        const { updatedname } = req.body;
+        const { updatedname } = req.body
         const userId = req.userId;
-        
-        console.log('📥 UserDashBoard Request:');
-        console.log('  - userId:', userId);
-        console.log('  - updatedname:', updatedname);
-        console.log('  - hasFile:', !!req.file);
-
-        if (!userId) {
-            return res.status(401).json({
-                message: 'User not authenticated'
-            });
-        }
-
         let imageUrl = null;
 
-        // ✅ FIX: Use req.file.buffer instead of req.file.path
-        if(req.file) {
-            try {
-                console.log('📤 Uploading to Cloudinary...');
-                
-                const uploadFromBuffer = (buffer) => {
-                    return new Promise((resolve, reject) => {
-                        const stream = cloudinary.uploader.upload_stream(
-                            { 
-                                folder: 'avatars',
-                                resource_type: 'auto',
-                                quality: 'auto'
-                            },
-                            (error, result) => {
-                                if(error) {
-                                    console.error('❌ Upload error:', error);
-                                    reject(error);
-                                } else {
-                                    console.log('✅ Upload successful:', result.secure_url);
-                                    resolve(result);
-                                }
-                            }
-                        );
-                        stream.end(buffer);  // ✅ Use buffer instead of filepath
-                    });
-                };
+        if(req.file){
+            const filepath = req.file.path
+            const result = await cloudinary.uploader.upload(filepath, {
+                folder: 'avatars'
+            })
 
-                const result = await uploadFromBuffer(req.file.buffer);
-                imageUrl = result.secure_url;
-                
-            } catch (uploadError) {
-                console.error('❌ Cloudinary upload failed:', uploadError.message);
-                return res.status(400).json({
-                    message: 'Image upload failed',
-                    error: uploadError.message
-                });
-            }
+            imageUrl = result.secure_url;
         }
 
-        const updateData = {};
-        
-        if (updatedname && updatedname.trim()) {
-            updateData.username = updatedname.trim();
-        }
-        
-        if (imageUrl) {
-            updateData.avatar = imageUrl;
-        }
+        const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+            ...(updatedname && {username: updatedname}),
+            ...(imageUrl && {avatar: imageUrl}),
+            
+        },
+        {new: true}
+    )
 
-        // ✅ Validation: Check if there's data to update
-        if (Object.keys(updateData).length === 0) {
-            console.warn('⚠️ No data to update');
-            return res.status(400).json({
-                message: 'No data to update - provide name or image'
-            });
-        }
-
-        console.log('📝 Updating user with:', updateData);
-
-        const updatedUser = await UserModel.findByIdAndUpdate(
-            userId, 
-            updateData,
-            { new: true, runValidators: true }
-        );
-
-        if (!updatedUser) {
-            console.error('❌ User not found:', userId);
-            return res.status(404).json({
-                message: 'User not found'
-            });
-        }
-
-        console.log('✅ User updated successfully');
-        res.status(200).json({
-            message: 'Data saved successfully',
+    res.status(200).json({
+            message: 'data saved successfully',
             user: updatedUser   
-        });
+        })
 
+        
     } catch (error) {
-        console.error('❌ UserDashBoard Error:', error.message);
-        res.status(500).json({
-            message: 'Failed to save data',
-            error: error.message
-        });
+        res.status(400).json({
+            message: 'Failed to save data'
+
+        })
+
+        console.log(error.message)
     }
-};
+
+}
+
+
+
