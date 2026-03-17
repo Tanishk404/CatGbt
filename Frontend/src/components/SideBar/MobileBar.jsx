@@ -29,7 +29,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
   const { id: ActiceId } = useParams();
 
 
-   const avatarUrl = `https://ui-avatars.com/api/?name=${Isavatar}&length=1&background=000000&color=ffffff&size=256&rounded=true`;
+ const avatarUrl =`${import.meta.env.VITE_AVATAR_URL}?name=${Isavatar}&length=1&background=000000&color=ffffff&size=256&rounded=true`;
   
     useEffect(() => {
       isUser?.map((v, i) => {

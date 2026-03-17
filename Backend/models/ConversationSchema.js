@@ -15,7 +15,14 @@ const Schema = new mongoose.Schema({
     },
 
     content: {
-        type: String
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        enum: ['image', 'text'],
+        required: true,
+        default: 'text'
     },
     createdAt: Date
 },

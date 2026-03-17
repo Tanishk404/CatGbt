@@ -13,7 +13,7 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
 
 
 
-    const avatarUrl = `https://ui-avatars.com/api/?name=${Isavatar}&length=1&background=000000&color=ffffff&size=256&rounded=true`
+    const avatarUrl =`${import.meta.env.VITE_AVATAR_URL}?name=${Isavatar}&length=1&background=000000&color=ffffff&size=256&rounded=true`;
     
         useEffect(()=>{
             isUser?.map((v,i) => {
@@ -41,9 +41,9 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
                         <div className='flex gap-2 justify-start items-center cursor-pointer hover:bg-white rounded-xl' onClick={()=> {setHideUserDashBoard(!hideUserDashboard)
                             setDashBoard(!dashBoard)
                         }}>
-                            <img className='w-6 h-6 rounded-full' src={v.avatar || avatarUrl} alt="avatar" />
+                            <img className='w-8 h-8 rounded-full' src={v.avatar || avatarUrl} alt="avatar" />
                             <div>
-                                <p className='text-sm'>{v.username}</p>
+                                <p className='text-sm truncate'>{v.username}</p>
                         <p className='truncate  text-xs w-20'>{v.email}</p>
                             </div>
                         </div>

@@ -27,7 +27,7 @@ function DeleteAndRename({children}) {
 
             console.log(token)
             
-            await axios.put(`https://catgbt-1.onrender.com/titles/${chatId}`, {
+            await axios.put(`${import.meta.env.VITE_API_URL}/titles/${chatId}`, {
                 title: RenameValue
             },
             {
@@ -57,7 +57,7 @@ function DeleteAndRename({children}) {
     
         const HandleDeleteChat = async (chatId, ActiceId) => {
             try {
-               await axios.delete(`https://catgbt-1.onrender.com/chat/delete/${chatId}`,{
+               await axios.delete(`${import.meta.env.VITE_API_URL}/chat/delete/${chatId}`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                     }

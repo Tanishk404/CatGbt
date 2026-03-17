@@ -64,7 +64,7 @@ function ChatPage() {
     const functionMessages = async () => {
         try {
           const token = localStorage.getItem("token")
-          const response = await axios.get(`https://catgbt-1.onrender.com/chat/${id}`, {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/chat/${id}`, {
               headers: {
     Authorization: `Bearer ${token}`
   }

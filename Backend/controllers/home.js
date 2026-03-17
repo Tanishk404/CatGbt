@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt'
 import { UserModel } from '../models/AuthSchema.js';
 import jwt from 'jsonwebtoken'
 import Bytez from 'bytez.js';
-import configureCloudinary from '../config/cloudinary.js';
+import cloudinary from '../config/cloudinary.js';
 
 
 
@@ -362,7 +362,6 @@ export const UserDashBoard = async (req, res) => {
         let imageUrl = null;
 
         if(req.file){
-            const cloudinary = configureCloudinary()
             const filepath = req.file.path
             const result = await cloudinary.uploader.upload(filepath, {
                 folder: 'avatars'

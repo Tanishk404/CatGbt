@@ -30,7 +30,7 @@ function Login() {
       e.preventDefault()
       try {
         
-        const res = await axios.post("https://catgbt-1.onrender.com/user/login", currentState)
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, currentState)
 
         const successMsg = res.data.message
         toast.success(successMsg)

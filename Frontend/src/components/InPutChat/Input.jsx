@@ -83,7 +83,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
         console.log(token)
 
 
-        const respon = await axios.post(`https://catgbt-1.onrender.com/`, 
+        const respon = await axios.post(import.meta.env.VITE_LOC_URL, 
       {
         role: "user",
         content: textval,

@@ -31,7 +31,7 @@ function SignUp() {
   const HandleForm = async (e) => {
     e.preventDefault();
     try {
-    const res = await axios.post("https://catgbt-1.onrender.com/user/signup", currentState)
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/signup`, currentState)
 
 
     const successMsg = res.data.message

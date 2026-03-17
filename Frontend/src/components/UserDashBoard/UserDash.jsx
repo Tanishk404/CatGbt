@@ -6,7 +6,7 @@ import CatLoading from '../CatAnimate/CatLoading'
 
 function UserDash() {
 
-    const [imgState, setImg ] = useState(null)
+    const [imgState, setImg ] = useState()
     const [Input, setInput ] = useState('')
 
     const [url, setImgUrl] = useState(null)
@@ -20,14 +20,15 @@ function UserDash() {
 
         e.preventDefault()
         const formData = new FormData()
-        formData.append('image', imgState)
+        if(imgState){
+            formData.append('image', imgState)
+        }
         formData.append('updatedname', Input) 
         const token = localStorage.getItem('token')
         setLoading(true)
             try {
-                const response =  await axios.post("https://catgbt-1.onrender.com/user/dashboard",formData, {
+                const response =  await axios.post(`${import.meta.env.VITE_API_URL}/user/dashboard`,formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${token}`
                     }
                 })
@@ -65,7 +66,7 @@ function UserDash() {
         const fun = async () =>{
             const token = localStorage.getItem('token')
             try {
-                const res = await axios.get("https://catgbt-1.onrender.com/user/dashboard", {
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/dashboard`, {
     headers: { Authorization: `Bearer ${token}` }
 })
 
