@@ -17,6 +17,7 @@ import CatLoading from "@/components/CatAnimate/CatLoading";
 import { toast, ToastContainer } from "react-toastify";
 import MiniDashBoard from "@/components/MiniDashBoard/MiniDashBoard";
 import { ToggleContext } from "@/context/OffToggle";
+import UserDash from "@/components/UserDashBoard/UserDash";
 
 function ChatPage() {
   const { id } = useParams()
@@ -119,7 +120,7 @@ function ChatPage() {
     <div className="w-full flex justify-center "> 
         <div ref={AutoScroll} className="w-full max-w-[50rem] flex items-center flex-1
          bg-slate-100 overflow-y-scroll h-full flex-col pb-48 pt-36">
-
+          <UserDash />
 
             {messages.map((v, i) => {
   

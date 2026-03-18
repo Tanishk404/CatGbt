@@ -362,12 +362,7 @@ export const UserDashBoard = async (req, res) => {
         let imageUrl = null;
 
         if(req.file){
-            const filepath = req.file.path
-            const result = await cloudinary.uploader.upload(filepath, {
-                folder: 'avatars'
-            })
-
-            imageUrl = result.secure_url;
+            imageUrl = req.file.path;
         }
 
         const updatedUser = await UserModel.findByIdAndUpdate(userId, {
@@ -390,7 +385,7 @@ export const UserDashBoard = async (req, res) => {
 
         })
 
-        console.log(error.message)
+        console.log(error)
     }
 
 }

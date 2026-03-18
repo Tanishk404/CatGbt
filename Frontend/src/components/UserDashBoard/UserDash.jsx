@@ -34,8 +34,8 @@ function UserDash() {
                 })
                 setHideUserDashBoard(false)
 
-
-                setState('This is a Main Response',response.data.checkAvatar)
+                console.log(response)
+                setState(response.data.checkAvatar)
 
                 setRefreshUser(!refreshUser)
 
