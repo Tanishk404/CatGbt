@@ -83,7 +83,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
         console.log(token)
 
 
-        const respon = await axios.post(import.meta.env.VITE_LOC_URL, 
+        const respon = await axios.post(import.meta.env.VITE_API_URL, 
       {
         role: "user",
         content: textval,
@@ -113,6 +113,8 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
         
       } catch (error) {
         console.log(error.message)
+
+        toast.error(error.message)
 
         toast.error(error.response.data.message)
 
