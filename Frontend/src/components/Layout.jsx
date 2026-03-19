@@ -44,21 +44,26 @@ function Layout({children, searchChat, setSearchChat}) {
 
           <Nav />
       
-        <div className='flex items-center flex-1 overflow-hidden'>
+        <div className='flex flex-1 overflow-hidden'>
             
             <MobileBar titles={titles} setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} setSearchChat={setSearchChat} searchChat={searchChat} />
             
             
             <SideBar searchChat={searchChat} setSearchChat={setSearchChat} titles={titles} setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} />
         
+        
+          <div className='absolute top-96'>
             <MiniDashBoard dashBoard={dashBoard} setDashBoard={setDashBoard} />
-            <div className='w-full flex flex-col justify-center text-center'>
-                <div className=''>
+
+          </div>
+        
+            <div className='w-full flex flex-1 overflow-hidden min-w-0 flex-col justify-center text-center'>
+                
     
 
                   {children}
               
-               </div>
+    
               
       
             </div>

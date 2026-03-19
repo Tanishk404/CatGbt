@@ -36,12 +36,12 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
     <div className={clsx('absolute p-2 ', dashBoard&&isUser ? 'block': 'hidden')}>
 
     
-    <div className='h-36 gap-4 dark:bg-[#2e2e2f] bg-gray-300 shadow-lg flex flex-col p-1 w-52 md:w-36 lg:w-36 absolute z-[100] mt-1 md:mt-0 lg:-mt-5 rounded-xl top-28 lg:top-36 md:top-36'>
+    <div className='h-36 gap-4 dark:bg-[#1e1e1e] bg-gray-300 shadow flex flex-col p-1 w-52 md:w-36 lg:w-36 absolute dark:shadow-gray-600 z-[100] mt-1 md:mt-0 lg:-mt-5 rounded-xl top-28 lg:bottom-0 md:bottom-0 '>
         {
             isUser?.map((v, i) => {
                 return(
                     <div key={i}>
-                        <div className='flex gap-2 justify-start items-center cursor-pointer dark:hover:bg-[#1e1e1e] hover:bg-white rounded-xl' onClick={()=> {setHideUserDashBoard(!hideUserDashboard)
+                        <div className='flex gap-2 justify-start items-center cursor-pointer dark:hover:bg-[#2e2e2f] hover:bg-white rounded-xl' onClick={()=> {setHideUserDashBoard(!hideUserDashboard)
                             setDashBoard(!dashBoard)
                         }}>
                             <img className='w-8 h-8 rounded-full' src={v.avatar || avatarUrl} alt="avatar" />

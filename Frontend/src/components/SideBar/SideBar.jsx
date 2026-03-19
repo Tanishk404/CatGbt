@@ -87,7 +87,7 @@ function SideBar({
         "bg-[rgb(235, 232, 232)] hidden sm:block lg:block md:block xl:block h-full z-50 dark:bg-[#1E1E1E] bg-[#ebe8e8] border-r-2 border-gray-300 overflow-y-auto relative",
         isOpen
           ? "w-80 transition-all ease-out"
-          : "w-0 sm:w-[70px] md:w-[70px] lg:w-[70px] overflow-x-hidden transition-all ease-in mt-",
+          : "w-0 sm:w-[70px] md:w-[70px] lg:w-[70px] overflow-x-hidden transition-all ease-in ",
       )}
     >
       <div className=" flex flex-col gap-2 ml-2 sticky top-0 bg-[rgb(235,232,232)] dark:bg-[#1E1E1E]">

@@ -109,7 +109,7 @@ function ChatPage() {
 
     <ToastContainer />
 
-      <div  className="h-dvh flex justify-center dark:bg-[#212121]">
+      <div  className="h-full flex-1 flex justify-center overflow-hidden dark:bg-[#212121]">
         
         <SearchChat searchChat={searchChat} setSearchChat={setSearchChat} />
 
@@ -117,8 +117,8 @@ function ChatPage() {
         
 
 
-    <div className="w-full flex justify-center "> 
-        <div ref={AutoScroll} className="w-full max-w-[50rem] flex items-center flex-1
+    <div className="w-full flex justify-center"> 
+        <div ref={AutoScroll} className="w-full flex items-center flex-1
          bg-slate-100 dark:bg-[#212121] overflow-y-scroll h-full flex-col pb-48 pt-36">
           <UserDash />
 
