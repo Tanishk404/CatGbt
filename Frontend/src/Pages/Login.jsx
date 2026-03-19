@@ -64,9 +64,9 @@ function Login() {
   return (
     <Layout>
 
-    <div className='w-full h-dvh flex flex-col justify-around justify-items-center items-center align-middle text-center bg-[#EBE8E8] pb-20 pt-20 pr-8 pl-8 md:pt-20 lg:pb-20 '>
+    <div className='w-full h-dvh flex flex-col justify-around justify-items-center items-center align-middle text-center dark:bg-[#1e1e1e] bg-[#EBE8E8] pb-20 pt-20 pr-8 pl-8 md:pt-20 lg:pb-20 '>
         <ToastContainer></ToastContainer>
-        <div className='flex border w-full ld:max-w-[70rem] md:max-w-[70rem] h-full border-gray-400 rounded-xl flex-col lg:flex-row md:flex-row relative'>
+        <div className='flex border w-full ld:max-w-[70rem] md:max-w-[70rem] h-full border-gray-400 rounded-xl flex-col lg:flex-row md:flex-row relative shadow-lg shadow-orange-400'>
 
         <form onSubmit={FormHandle} className=' h-full max-h-[40rem] w-full lg:max-w-[30rem] md:max-w-[30rem] flex flex-col gap-10 bg-inherit p-4 pt-10 flex-1 rounded-l-xl z-40'>
 
@@ -86,7 +86,7 @@ function Login() {
                     </div>
         
 
-            <button type='submit' className='h-10 mt-20 rounded-lg w-full p-2 bg-orange-400 text-white'>Login</button>
+            <button type='submit' className='h-10 mt-20 rounded-lg w-full p-2 hover:bg-orange-300 bg-orange-400 text-white'>Login</button>
 
             <Link to={'/user/signup'} >Register before login</Link>
         

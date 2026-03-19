@@ -137,7 +137,7 @@ function ChatPage() {
                     className={clsx(
                       v.role === "assistant"
                         ? "bg-white dark:bg-[#212121] w-full max-w-[50rem]  h-auto mb-10 p-2 text-start"
-                        : "bg-black dark:bg-[#1e1e1e] text-white w-auto h-auto rounded-tl-xl rounded-bl-xl rounded-br-xl p-2 mb-10 text-start",
+                        : "bg-black dark:bg-[#2f2f2f] text-white w-auto h-auto rounded-tl-xl rounded-bl-xl rounded-br-xl p-2 mb-10 text-start",
                     )}
                   >
                     

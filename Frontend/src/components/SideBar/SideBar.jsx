@@ -235,7 +235,7 @@ function SideBar({
           ) : (
             <div
               className={
-                "bg-gray-200 shadow-xl p-4 h-32 w-44 flex justify-center flex-col items-center rounded-lg left-10 absolute bottom-16"
+                "bg-gray-200 dark:bg-black/50 shadow-xl p-4 h-32 w-44 flex justify-center flex-col items-center rounded-lg left-10 absolute bottom-16"
               }
             >
               <p>Login to create chat history</p>
