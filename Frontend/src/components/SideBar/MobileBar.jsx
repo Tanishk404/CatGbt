@@ -53,13 +53,13 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
   return (
     <div
       className={clsx(
-        "bg-[rgb(235, 232, 232)] h-full sm:hidden lg:hidden md:hidden xl:hidden border-r-2 border-gray-300 overflow-y-auto overflow-x-hidden",
+        "bg-[rgb(235, 232, 232)] h-full sm:hidden lg:hidden md:hidden xl:hidden border-r-2  border-gray-300 overflow-y-auto overflow-x-hidden",
         isOpen
-          ? "w-56 absolute z-50 bg-[#EBE8E8] transition-all ease-in"
-          : "w-0 sm:w-[70px] md:w-[70px] lg:w-[70px] overflow-x-hidden transition ease-in-out",
+          ? "w-56 absolute z-50 dark:bg-[#1e1e1e] bg-[#EBE8E8] transition-all ease-in dark:border-r-[1px] dark:border-gray-300"
+          : "w-0 sm:w-[70px] md:w-[70px] lg:w-[70px] overflow-x-hidden transition ease-in-out dark:border-r-[0px] dark:border-gray-300",
       )}
     >
-      <div className=" flex flex-col gap-2 ml-2 sticky top-0 bg-[rgb(235,232,232)]">
+      <div className=" flex flex-col gap-2 ml-2 sticky top-0 dark:bg-[#1e1e1e] bg-[rgb(235,232,232)]">
         <div
           className="w-full flex justify-end"
           onClick={() => {
@@ -71,7 +71,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
         </div>
 
         <small className={clsx(isOpen ? "block" : "hidden")}>DASHBOARD</small>
-        <div className="hover:bg-gray-100 p-1 rounded-lg flex gap-2 items-center">
+        <div className="hover:bg-gray-100 dark:hover:bg-[#2e2e2f] p-1 rounded-lg flex gap-2 items-center">
           <SquarePen className="w-[20px]" />
           <Link to={"/"} className={clsx(isOpen ? "block" : "hidden")}>
             Create a new Chat
@@ -79,7 +79,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
         </div>
 
         <div
-          className="hover:bg-gray-100 p-1 rounded-lg flex gap-2 items-center"
+          className="hover:bg-gray-100 p-1 rounded-lg flex gap-2 items-center dark:hover:bg-[#2e2e2f]"
           onClick={() => {
             setSearchChat(!searchChat);
             setIsOpen(!isOpen);
@@ -92,12 +92,12 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
           </button>
         </div>
 
-        <div className="flex gap-2 align-middle items-center hover:bg-gray-100 p-1 rounded-lg">
+        {/* <div className="flex gap-2 align-middle items-center hover:bg-gray-100 p-1 rounded-lg dark:hover:bg-[#2e2e2f]">
           <Images className="w-[20px]" strokeWidth="2" />
           <Link to={"/"} className={clsx(isOpen ? "block" : "hidden")}>
             Images
           </Link>
-        </div>
+        </div> */}
       </div>
       <hr className="h-[2px] bg-gray-300 m-2" />
 
@@ -114,7 +114,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
          
                     to={`/chat/${v._id}`}
                     key={v._id}
-                    className="hover:bg-gray-100 p-1 flex rounded-lg text-start  justify-between "
+                    className="hover:bg-gray-100 dark:hover:bg-[#2e2e2f] p-1 flex rounded-lg text-start  justify-between "
                   >
                     {/* Rename Input Form */}
 
@@ -144,7 +144,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                     )}
                     <div
                       className={clsx(
-                        "bg-[#ebe8e8] shadow-md h-[100px] pt-4 p-2 flex-col mt-5 rounded-lg w-[120px] z-40 text-start items-start absolute gap-2 right-0",
+                        "bg-[#ebe8e8] dark:bg-[#2e2e2e] shadow-md h-[100px] pt-4 p-2 flex-col mt-5 rounded-lg w-[120px] z-40 text-start items-start absolute gap-2 right-0",
                         menuId === v._id ? "flex" : "hidden",
                       )}
                     >
@@ -153,7 +153,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                           e.preventDefault();
                           setRename(v._id);
                         }}
-                        className="flex justify-start items-start hover:bg-white p-[2px] rounded-lg w-full gap-2 text-center cursor-pointer"
+                        className="flex justify-start dark:hover:bg-[#1e1e1e] items-start hover:bg-white p-[2px] rounded-lg w-full gap-2 text-center cursor-pointer"
                       >
                         <Pencil className="h-4 w-4" /> Rename
                       </small>
@@ -161,7 +161,9 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                         onClick={() => HandleDeleteChat(v._id, ActiceId)}
                         className="flex
                                                         gap-2
-                                                        text-red-700 items-center text-center cursor-pointer hover:bg-white p-[2px] rounded-lg w-full"
+                                                        text-red-700 items-center
+                                                        dark:hover:bg-[#1e1e1e] 
+                                                        text-center cursor-pointer hover:bg-white p-[2px] rounded-lg w-full"
                       >
                         <Trash className="h-4 w-4" />
                         Delete
@@ -189,7 +191,7 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
       {/* <hr className='h-[3px] bg-gray-300 m-2' /> */}
       <div
         className={clsx(
-          "fixed  bg-[rgb(235,232,232)] w-52 flex items-center gap-2 p-2 hover:bg-white cursor-pointer",
+          "fixed  bg-[rgb(235,232,232)] dark:bg-[#1e1e1e] w-52 flex items-center gap-2 p-2 dark:hover:bg-[#2e2e2f]  hover:bg-white cursor-pointer",
           isOpen ? "bottom-0" : "top-full",
         )}
          onClick={() => setDashBoard(!dashBoard)}

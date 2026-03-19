@@ -83,17 +83,17 @@ function SideBar({
   return (
     <div
       className={clsx(
-        "bg-[rgb(235, 232, 232)] hidden sm:block lg:block md:block xl:block h-full z-50 bg-[#ebe8e8] border-r-2 border-gray-300 overflow-y-auto relative",
+        "bg-[rgb(235, 232, 232)] hidden sm:block lg:block md:block xl:block h-full z-50 dark:bg-[#1E1E1E] bg-[#ebe8e8] border-r-2 border-gray-300 overflow-y-auto relative",
         isOpen
           ? "w-80 transition-all ease-out"
           : "w-0 sm:w-[70px] md:w-[70px] lg:w-[70px] overflow-x-hidden transition-all ease-in mt-",
       )}
     >
-      <div className=" flex flex-col gap-2 ml-2 sticky top-0 bg-[rgb(235,232,232)]">
+      <div className=" flex flex-col gap-2 ml-2 sticky top-0 bg-[rgb(235,232,232)] dark:bg-[#1E1E1E]">
         <div className="w-full flex justify-end"></div>
 
         <small className={clsx(isOpen ? "block" : "hidden")}>DASHBOARD</small>
-        <div className="hover:bg-gray-100 p-1 rounded-lg flex gap-2 items-center">
+        <div className="hover:bg-gray-100 dark:hover:bg-[#2e2e2f] p-1 rounded-lg flex gap-2 items-center">
           <Link
             to={"/"}
             className={clsx(
@@ -119,20 +119,21 @@ function SideBar({
           onClick={() => {
             setSearchChat(!searchChat);
           }}
-          className="hover:bg-gray-100 p-1 rounded-lg flex gap-2 items-center"
+          className="hover:bg-gray-100 p-1 rounded-lg flex gap-2 items-center dark:hover:bg-[#2e2e2f]"
         >
           <Search className="w-[20px]" />
           <p className={clsx(isOpen ? "block" : "hidden")}> Search Chat</p>
         </button>
 
-        <div className="flex gap-2 align-middle items-center hover:bg-gray-100 p-1 rounded-lg">
+        {/* <div className="flex gap-2 align-middle items-center hover:bg-gray-100 p-1 rounded-lg">
           <Images className="w-[20px]" />
           <Link to={"/"} className={clsx(isOpen ? "block" : "hidden")}>
             Images
           </Link>
-        </div>
+        </div> */}
       </div>
-      <hr className="h-[2px] bg-gray-300 m-2" />
+
+      <div className="h-[2px] dark:bg-white dark:h-[1px] bg-gray-300 m-2" ></div>
 
       <div className={clsx(isOpen ? "block" : "hidden")}>
         {isUser && <small className="ml-2">Chats</small>}
@@ -152,7 +153,7 @@ function SideBar({
                       }}
                       to={`/chat/${v._id}`}
                       key={v._id}
-                      className="hover:bg-gray-100 p-1 flex rounded-lg text-start  justify-between "
+                      className="dark:hover:bg-[#2e2e2e] hover:bg-gray-100 p-1 flex rounded-lg text-start  justify-between "
                     >
                       {/* Rename Input Form */}
 
@@ -185,7 +186,7 @@ function SideBar({
                       )}
                       <div
                         className={clsx(
-                          "bg-[#ebe8e8] shadow-md h-[100px] pt-4 p-2 flex-col mt-5 rounded-lg w-[120px] z-40 text-start items-start absolute gap-2 right-0",
+                          "bg-[#ebe8e8] dark:bg-[#2e2e2f] dark:shadow-xl shadow-md h-[100px] pt-4 p-2 flex-col mt-5 rounded-lg w-[120px] z-40 text-start items-start absolute gap-2 right-0",
                           menuId === v._id ? "flex" : "hidden",
                         )}
                       >
@@ -194,7 +195,7 @@ function SideBar({
                             e.preventDefault();
                             setRename(v._id);
                           }}
-                          className="flex hover:bg-white
+                          className="flex dark:hover:bg-[#1e1e1e] hover:bg-white
                                     p-1 rounded-lg
                                     w-full justify-start items-start  gap-2 text-center cursor-pointer"
                         >
@@ -204,6 +205,7 @@ function SideBar({
                           onClick={() => HandleDeleteChat(v._id, ActiceId)}
                           className="flex
                                     gap-2
+                                    dark:hover:bg-[#1e1e1e]
                                     hover:bg-white
                                     p-1 rounded-lg
                                     w-full
@@ -246,7 +248,7 @@ function SideBar({
       {/* <hr className='h-[3px] bg-gray-300 m-2' /> */}
       <div
         className={clsx(
-          "sticky bg-[rgb(235,232,232)] flex items-center gap-2 p-2 cursor-pointer md:overflow-x-hidden  hover:bg-white",
+          "sticky dark:bg-[#1E1E1E] dark:hover:bg-[#2e2e2f] bg-[rgb(235,232,232)] flex items-center gap-2 p-2 cursor-pointer md:overflow-x-hidden  hover:bg-white",
           isOpen && titles.length > 9 ? "bottom-0 " : "top-full",
         )}
         onClick={() => setDashBoard(!dashBoard)

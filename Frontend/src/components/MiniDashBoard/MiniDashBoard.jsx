@@ -3,6 +3,7 @@ import { UserCont } from '@/context/UserContext'
 import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
 import { LogOutIcon, Settings, SunMoon } from 'lucide-react'
+import ThemeToggle from '../ThemeComponent'
 
 
 function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
@@ -33,12 +34,12 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
     }
   return (
     <div className={clsx('absolute p-2 ', dashBoard&&isUser ? 'block': 'hidden')}>
-    <div className='h-36 gap-4 bg-gray-300 shadow-lg flex flex-col p-1 w-52 md:w-36 lg:w-36 absolute z-[100] mt-1 md:mt-0 lg:-mt-5 rounded-xl top-48 lg:top-36 md:top-36'>
+    <div className='h-36 gap-4 dark:bg-[#2e2e2f] bg-gray-300 shadow-lg flex flex-col p-1 w-52 md:w-36 lg:w-36 absolute z-[100] mt-1 md:mt-0 lg:-mt-5 rounded-xl top-28 lg:top-36 md:top-36'>
         {
             isUser?.map((v, i) => {
                 return(
                     <div key={i}>
-                        <div className='flex gap-2 justify-start items-center cursor-pointer hover:bg-white rounded-xl' onClick={()=> {setHideUserDashBoard(!hideUserDashboard)
+                        <div className='flex gap-2 justify-start items-center cursor-pointer dark:hover:bg-[#1e1e1e] hover:bg-white rounded-xl' onClick={()=> {setHideUserDashBoard(!hideUserDashboard)
                             setDashBoard(!dashBoard)
                         }}>
                             <img className='w-8 h-8 rounded-full' src={v.avatar || avatarUrl} alt="avatar" />
@@ -52,11 +53,12 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
             })
         }
 
-        <button className='mt-2 text-xs flex gap-2 items-center hover:bg-white p-1 rounded-lg'>
+        {/* <button className='mt-2 text-xs flex gap-2 items-center hover:bg-white p-1 rounded-lg'>
             <Settings className='w-4 h-4' />
             Settings
-            </button>
-        <button className='mt-2 bg-black text-white text-center flex justify-center rounded-lg gap-2 items-center p-2 text-xs h-6 ' onClick={LogOut}><LogOutIcon className='w-4 h-4'/> Logout</button>
+            </button> */}
+            <ThemeToggle />
+        <button className='mt-2 bg-black hover:bg-black/50 text-white text-center flex justify-center rounded-lg gap-2 items-center p-2 text-xs h-6 ' onClick={LogOut}><LogOutIcon className='w-4 h-4'/> Logout</button>
     </div>
 
 

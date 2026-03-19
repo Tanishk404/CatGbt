@@ -13,7 +13,7 @@ function Nav() {
   
   
   return (
-    <div className='w-full pr-7 bg-gray-200 mt-0 p-2 flex h-16 justify-between z-40 absolute lg:static md:static xl:static'>
+    <div className='w-full pr-7 bg-gray-200 dark:bg-[#1E1E1E] mt-0 p-2 flex h-16 justify-between z-40 absolute lg:static md:static xl:static'>
         <div>
           <CatAnimate />
           <button className='sm:hidden lg:hidden -mt-10 z-10 absolute md:hidden xl:hidden' onClick={() => {setIsOpen(!isOpen)}}>

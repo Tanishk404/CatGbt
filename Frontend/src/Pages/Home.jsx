@@ -70,7 +70,7 @@ function Home() {
          </div>
 
 
-    <div className='h-[100dvh] flex flex-col overflow-hidden'>
+    <div className='h-[100dvh] flex flex-col overflow-hidden dark:bg-[#1E1E1E]'>
 
           <Nav />
 

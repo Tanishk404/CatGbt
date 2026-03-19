@@ -13,13 +13,14 @@ import UserContext from './context/UserContext'
 import Login from './Pages/Login'
 import SignUp from './Pages/SignUp'
 import OffToggle from './context/OffToggle'
+import ThemeToggle from './components/ThemeComponent'
 
 function App() {
   
   return (
     <Theme>
       <OffToggle>
-
+      
       <UserContext>
 
       <TitleContextComp>

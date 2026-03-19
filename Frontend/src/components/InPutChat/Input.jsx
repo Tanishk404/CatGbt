@@ -178,11 +178,12 @@ const PreviewFullImg = () => {
     
 
    
-      <div className="flex rounded-md flex-col justify-center w-full sticky max-w-[42rem] bottom-0 items-center focus-within:ring-1 focus-within:ring-black focus-within:border-black bg-white">
+      <div className="flex rounded-md flex-col justify-center w-full sticky max-w-[42rem] bottom-0 items-center focus-within:ring-1 focus-within:ring-black focus-within:border-black dark:bg-[#373737] bg-white">
         {/* This Is Media (Images, Pngs etc) Div */}
         <div
           className={clsx(
-            "bg-white w-full h-24 p-2 rounded-t-lg",
+
+            "dark:bg-[#373737] bg-white w-full h-24 p-2 rounded-t-lg",
             mediaName ? "block" : "hidden",
           )}
         >
@@ -230,7 +231,7 @@ const PreviewFullImg = () => {
           onKeyDown={HandleKeyDown}
           aria-activedescendant={1}
           rows={2}
-          className="text-sm leading-tight resize-none w-full rounded-t-md overflow-y-auto h-20 outline-none pt-2 pl-2"
+          className="text-sm dark:bg-[#373737] leading-tight resize-none w-full rounded-t-md overflow-y-auto h-20 outline-none pt-2 pl-2"
           placeholder="Type or speack your message..."
           id=""
         ></textarea>

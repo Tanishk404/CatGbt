@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { UserCont } from '@/context/UserContext'
 import clsx from 'clsx'
 import CatLoading from '../CatAnimate/CatLoading'
+import { Camera } from 'lucide-react'
 
 function UserDash() {
 
@@ -94,15 +95,16 @@ function UserDash() {
          }
             
       <div className={clsx('w-full flex justify-center absolute z-50 bg-black/50 h-full overflow-hidden left-0 top-0 p-2', hideUserDashboard ? 'flex': 'hidden')}>
-        <div className='bg-white shadow-2xl w-96 h-96 top-20 flex flex-col justify-center rounded-xl items-center relative'>
+        <div className='bg-white dark:bg-[#1e1e1e] shadow-2xl w-96 h-96 top-20 flex flex-col justify-center rounded-xl items-center relative'>
         <form className='w-full flex flex-col items-center ' onSubmit={HandleUpdate}>
-            <label htmlFor="userImage" className='flex w-24 relative rounded-full h-24 -top-10'>
+            <label htmlFor="userImage" className='flex w-32 relative rounded-full h-32 -top-10 cursor-pointer'>
                 
-            <input onChange={handleUserImage} className='opacity-0 h-32 -mt-10 w-32 rounded-full' id='userImage' name='userImage' type="file" accept='image/*' />
+            <input onChange={handleUserImage} className='opacity-0  h-32 -mt-10 w-32 rounded-full' id='userImage' name='userImage' type="file" accept='image/*' />
 
        
-                        <img src={url || state?.avatar}  className='h-24 w-24 rounded-full object-cover border text-1xl absolute' alt='avatar' />
-
+                        <img src={url || state?.avatar}  className='h-32 w-32 rounded-full border-white object-cover border text-1xl absolute' alt='avatar' />
+    
+                        <Camera className='z-30 h-6 w-6 rounded-lg absolute top-28 right-6 bg-[#101010] shadow-2xl p-1' />
     
     
 
@@ -116,17 +118,17 @@ function UserDash() {
                     name='updatedname' 
                     placeholder=' '
                     onChange={(e) => setInput(e.target.value)}
-                    value={Input} className='text-xs h-14 outline-1 w-full outline-gray-400 pl-2 rounded-md border-[2px]' />
+                    value={Input} className='dark:bg-[#1e1e1e] text-xs h-14 outline-1 w-full outline-gray-400 pl-2 rounded-md border-[2px]' />
                 </div>
 
 
 
                 <div className='flex gap-5 absolute right-2 top-[330px]'>
-                    <button onClick={()=>setHideUserDashBoard(false)} type='button' className='border border-black  p-1 w-20 rounded-lg text-sm'>Cancel</button>
+                    <button onClick={()=>setHideUserDashBoard(false)} type='button' className='border border-black  p-1 w-20 rounded-lg text-sm dark:border-white dark:hover:bg-[#2e2e2f]'>Cancel</button>
 
                     <button
                     
-                    type='submit' className='bg-black text-white p-1 w-20 rounded-lg text-sm'>Save</button>
+                    type='submit' className='bg-black hover:bg-black/50 text-white p-1 w-20 rounded-lg text-sm'>Save</button>
 
                 </div>
             </div>

@@ -109,7 +109,7 @@ function ChatPage() {
 
     <ToastContainer />
 
-      <div  className="h-dvh flex justify-center">
+      <div  className="h-dvh flex justify-center dark:bg-[#212121]">
         
         <SearchChat searchChat={searchChat} setSearchChat={setSearchChat} />
 
@@ -119,7 +119,7 @@ function ChatPage() {
 
     <div className="w-full flex justify-center "> 
         <div ref={AutoScroll} className="w-full max-w-[50rem] flex items-center flex-1
-         bg-slate-100 overflow-y-scroll h-full flex-col pb-48 pt-36">
+         bg-slate-100 dark:bg-[#212121] overflow-y-scroll h-full flex-col pb-48 pt-36">
           <UserDash />
 
             {messages.map((v, i) => {
@@ -136,8 +136,8 @@ function ChatPage() {
                   <div
                     className={clsx(
                       v.role === "assistant"
-                        ? "bg-white w-full max-w-[50rem]  h-auto mb-10 p-2 shadow text-start"
-                        : "bg-black text-white w-auto h-auto rounded-tl-xl rounded-bl-xl rounded-br-xl p-2 mb-10 text-start",
+                        ? "bg-white dark:bg-[#212121] w-full max-w-[50rem]  h-auto mb-10 p-2 text-start"
+                        : "bg-black dark:bg-[#1e1e1e] text-white w-auto h-auto rounded-tl-xl rounded-bl-xl rounded-br-xl p-2 mb-10 text-start",
                     )}
                   >
                     
@@ -188,7 +188,7 @@ function ChatPage() {
         <div
         
           className="flex
-               justify-center bg-[#F1F5F9] flex-col gap-5 max-w-[50rem] bottom-0 items-center w-full fixed"
+               justify-center dark:bg-[#212121] bg-[#F1F5F9] flex-col gap-5 max-w-[50rem] bottom-0 items-center w-full fixed"
         >
           <div
             className="flex
