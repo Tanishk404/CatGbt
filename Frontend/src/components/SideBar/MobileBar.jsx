@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { DeleteAndRenameContext } from "@/context/DeleteAndRename";
 import { UserCont } from "@/context/UserContext";
+import ThemeToggle from "../ThemeComponent";
 
 function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard }) {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
@@ -104,7 +105,10 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
       <div className={clsx(isOpen ? "block" : "hidden")}>
         <small className="ml-2">Chats</small>
         <div className="ml-2 flex-col flex gap-2 h-full  px-2 space-y-3 mb-[100px]">
-          {titles?.length > 0 ? (
+          
+          {
+          isUser ?(
+          titles?.length > 0 ? (
             titles &&
             titles.map((v, i) => {
               return (
@@ -184,14 +188,26 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
             })
           ) : (
             <p className="mt-40 text-center">No chat history</p>
-          )}
+          )) : (
+            <div
+                className={
+                            "bg-gray-200 dark:bg-black/20 shadow-xl p-2 h-32 w-44 flex  flex-col items-center rounded-lg absolute bottom-24"
+                          }
+                        >
+                          <p>Login to create chat history</p>
+                          <Link to={"/user/login"}>Login</Link>
+                        </div>
+          )
+
+
+        }
         </div>
       </div>
 
       {/* <hr className='h-[3px] bg-gray-300 m-2' /> */}
       <div
         className={clsx(
-          "fixed  bg-[rgb(235,232,232)] dark:bg-[#1e1e1e] w-52 flex items-center gap-2 p-2 dark:hover:bg-[#2e2e2f]  hover:bg-white cursor-pointer",
+          "fixed  bg-[rgb(235,232,232)] dark:bg-[#1e1e1e] w-52 flex items-center gap-2 p-2 cursor-pointer",
           isOpen ? "bottom-0" : "top-full",
         )}
          onClick={() => setDashBoard(!dashBoard)}
@@ -203,20 +219,28 @@ function MobileBar({ titles, setSearchChat, searchChat, setDashBoard, dashBoard 
                           {/* <p className='ml-2 bg-black h-8 w-8 rounded-full text-white text-center text-lg'>
                               T
                               </p> */}
+                              <div className="hover:bg-white dark:hover:bg-[#2e2e2f] flex gap-4 items-center w-full rounded-lg p-1">
+
                           <img src={v.avatar || avatarUrl} className="h-8 rounded-full w-8" alt="" />
                           <p className={clsx(isOpen ? "block" : "hidden")}>
                             {v.username}
                           </p>
+
+                              </div>
                         </>
                       );
                     })
                   ) : isOpen ? (
-                    <div className="flex gap-2 text-center items-center">
+                    <div>
+                      <ThemeToggle />
+                    <Link to={"/user/login"} className="flex gap-2 text-center items-center dark:hover:bg-[#2e2e2f] hover:bg-white w-52 rounded-lg">
                       <CircleUserRound
                         strokeWidth={1}
                         className="w-10 cursor-pointer h-10"
                       />
                       <Link to={"/user/login"}>Login</Link>
+                    </Link>
+
                     </div>
                   ) : (
                     <Link to={"/user/login"}>

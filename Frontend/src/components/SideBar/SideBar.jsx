@@ -18,6 +18,7 @@ import {
   CircleUserRound,
 } from "lucide-react";
 import { UserCont } from "@/context/UserContext";
+import ThemeToggle from "../ThemeComponent";
 
 function SideBar({
   titles,
@@ -235,7 +236,7 @@ function SideBar({
           ) : (
             <div
               className={
-                "bg-gray-200 dark:bg-black/50 shadow-xl p-4 h-32 w-44 flex justify-center flex-col items-center rounded-lg left-10 absolute bottom-16"
+                "bg-gray-200 dark:bg-black/50 shadow-xl p-4 h-32 w-44 flex justify-center flex-col items-center rounded-lg left-10 absolute bottom-24"
               }
             >
               <p>Login to create chat history</p>
@@ -248,7 +249,7 @@ function SideBar({
       {/* <hr className='h-[3px] bg-gray-300 m-2' /> */}
       <div
         className={clsx(
-          "sticky dark:bg-[#1E1E1E] dark:hover:bg-[#2e2e2f] bg-[rgb(235,232,232)] flex items-center gap-2 p-2 cursor-pointer md:overflow-x-hidden  hover:bg-white",
+          "sticky dark:bg-[#1E1E1E] bg-[rgb(235,232,232)] flex items-center gap-2 p-2 cursor-pointer md:overflow-x-hidden",
           isOpen && titles.length > 9 ? "bottom-0 " : "top-full",
         )}
         onClick={() => setDashBoard(!dashBoard)
@@ -263,21 +264,27 @@ function SideBar({
                 {/* <p className='ml-2 bg-black h-8 w-8 rounded-full text-white text-center text-lg'>
                     T
                     </p> */}
+                <div className="dark:hover:bg-[#2e2e2f] flex items-center gap-5 w-full rounded-lg p-1 hover:bg-white">
+
                 <img src={v.avatar || avatarUrl } className="h-8 rounded-full w-8" alt="" />
                 <p className={clsx(isOpen ? "block" : "hidden")}>
                   {v.username}
                 </p>
+                </div>
               </>
             );
           })
         ) : isOpen ? (
-          <div className="flex gap-2 text-center items-center">
+            <div>
+              <ThemeToggle />
+                  <div className="flex gap-2 text-center items-center hover:bg-white w-80 rounded-lg dark:hover:bg-[#2e2e2f]">
             <CircleUserRound
               strokeWidth={1}
               className="w-10 cursor-pointer h-10"
             />
             <Link to={"/user/login"}>Login</Link>
           </div>
+            </div>
         ) : (
           <Link to={"/user/login"}>
             <CircleUserRound
