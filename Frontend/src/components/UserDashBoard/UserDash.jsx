@@ -104,7 +104,7 @@ function UserDash() {
        
                         <img src={url || state?.avatar}  className='h-32 w-32 rounded-full border-white object-cover border text-1xl absolute' alt='avatar' />
     
-                        <Camera className='z-30 h-6 w-6 rounded-lg absolute top-28 right-6 dakr:bg-[#101010] bg-white shadow-2xl p-1' />
+                        <Camera className='z-30 h-6 w-6 rounded-lg absolute top-28 right-6 dakr:bg-[#101010] dark:text-black bg-white shadow-2xl p-1' />
     
     
 
