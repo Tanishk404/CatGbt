@@ -13,7 +13,7 @@ const PORT = 3000;
 
 app.use(cookieParser())
 app.use(cors({
-    origin: 'http://localhost:8080',
+    origin: 'https://cat-gbt-xhx7.vercel.app/',
     credentials: true
 }));
 app.use(express.json())
