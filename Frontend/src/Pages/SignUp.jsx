@@ -72,7 +72,7 @@ function SignUp() {
             <input onChange={onChangeHua} value={currentState.emailid} name='emailid' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type="email" placeholder='Enter email id' />
 
             <div className='flex w-full'>
-                <input onChange={onChangeHua} value={currentState.password} name='password' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type={show ? 'text': 'password'} placeholder='Enter you password'/>
+                <input onChange={onChangeHua} value={currentState.password} name='password' minLength='8' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type={show ? 'text': 'password'} placeholder='Enter you password'/>
                 {
                   currentState.password.length > 0 && 
 (                <button type='button' onClick={() => {setShowPass(!show)}}>

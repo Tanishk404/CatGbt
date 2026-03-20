@@ -114,9 +114,13 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       } catch (error) {
         console.log(error.message)
 
-        toast.error(error.message)
-
         toast.error(error.response.data.message)
+        if(error.response.data.message === "Invalid token"){
+          setTimeout(() => {
+            navigate("/user/login")
+          }, 1500);
+
+        }
 
 
       } finally{

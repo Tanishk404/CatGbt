@@ -68,12 +68,13 @@ function UserDash() {
             const token = localStorage.getItem('token')
             try {
                 const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/dashboard`, {
-    headers: { Authorization: `Bearer ${token}` }
-})
+                headers: { Authorization: `Bearer ${token}` }
+                })
 
                 setState(res.data.user)
 
                 setInput(res.data.user.username)
+                setImgUrl(null)
                 
             } catch (error) {
                 console.log(error.message)
@@ -82,7 +83,7 @@ function UserDash() {
 
         fun()
 
-    },[])
+    },[hideUserDashboard])
 
 
 

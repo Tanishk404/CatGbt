@@ -1,9 +1,10 @@
 import { Router } from "express";
-import {  DeleteChat, GetHome,  GetTitles,  GetUserDashboard,  HandelDefaultRoute, Login, RenameTitle, SignUp, UserDashBoard}  from "../controllers/home.js";
+import {  DeleteChat, GetHome,  GetTitles, HandelDefaultRoute, RenameTitle}  from "../controllers/home.js";
 import { VerifyToken } from "../middleware/AuthMiddleware.js";
 import { upload } from '../middleware/multer.js'
 export const RoutesAll = Router()
-
+import { Login, SignUp } from '../controllers/auth.js'
+import { GetUserDashboard, UserDashBoard } from "../controllers/userdashboard.js";
 
 RoutesAll.post("/user/signup", SignUp);
 RoutesAll.post("/user/login", Login);

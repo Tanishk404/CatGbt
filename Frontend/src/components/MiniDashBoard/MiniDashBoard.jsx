@@ -46,7 +46,7 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
                         }}>
                             <img className='w-8 h-8 rounded-full' src={v.avatar || avatarUrl} alt="avatar" />
                             <div>
-                                <p className='text-sm truncate'>{v.username}</p>
+                                <p className='text-sm truncate w-20'>{v.username}</p>
                         <p className='truncate  text-xs w-20'>{v.email}</p>
                             </div>
                         </div>
