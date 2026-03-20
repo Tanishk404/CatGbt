@@ -285,7 +285,7 @@ function SideBar({
           </div>
             </div>
         ) : (
-          <Link to={"/user/login"} className="hover:bg-white w-full rounded-lg">
+          <Link to={"/user/login"} className="hover:bg-white dark:hover:bg-[#2e2e2f] w-full rounded-lg">
             <CircleUserRound
               strokeWidth={1}
               className="w-10 cursor-pointer h-10"
