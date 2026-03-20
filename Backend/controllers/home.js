@@ -113,13 +113,15 @@ export const GetHome = async (req, res) => {
 
     const AiResponse = output.content;
 
+   
+
     res.status(200).json({
       data: AiResponse,
       message: "Get From Backend",
       conversationId: convId,
     });
   } catch (error) {
-    console.log(error.message);
+ 
 
     res.status(400).json({
       message: "Today request quota exceed",
