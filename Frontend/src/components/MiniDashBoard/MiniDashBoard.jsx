@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
 import { LogOutIcon, Settings, SunMoon } from 'lucide-react'
 import ThemeToggle from '../ThemeComponent'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 
 function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
@@ -24,13 +26,21 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
         });
     },[isUser])
 
-    const LogOut = () => {
-        localStorage.removeItem('token')
-        setIsUser(null)
-        setTitles([])
-        setTimeout(() => {
-            navigate('/user/login');
-        }, 1000)
+    const LogOut = async () => {
+        try {
+            setIsUser(null)
+            setTitles([])
+
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/logout`)
+       
+            toast.success(res.data.message)
+            setTimeout(() => {
+                navigate("/user/login");
+            },1000)
+
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
   return (
     <div className={clsx('absolute p-2 ', dashBoard&&isUser ? 'block': 'hidden')}>

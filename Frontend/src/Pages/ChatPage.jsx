@@ -64,17 +64,10 @@ function ChatPage() {
 
     const functionMessages = async () => {
         try {
-          const token = localStorage.getItem("token")
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/chat/${id}`, {
-              headers: {
-    Authorization: `Bearer ${token}`
-  }
-          })
+        
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/chat/${id}`)
 
           setMessage(response.data.message)
-
-
-          
         } catch (error) {
           toast.error(error.response.data.message)
             console.log(error)

@@ -16,24 +16,14 @@ function DeleteAndRename({children}) {
     const [RenameValue, setRenameValue] = useState('');
 
 
-    
-    const token = localStorage.getItem("token")
-
         const HandleRename = async (chatId) => {
     
           if(!RenameValue.trim()) return;
           try {
 
-
-            console.log(token)
-            
             await axios.put(`${import.meta.env.VITE_API_URL}/titles/${chatId}`, {
                 title: RenameValue
             },
-            {
-                headers : {
-                    Authorization : `Bearer ${token}`
-                }}
                
             )
     
@@ -57,11 +47,7 @@ function DeleteAndRename({children}) {
     
         const HandleDeleteChat = async (chatId, ActiceId) => {
             try {
-               await axios.delete(`${import.meta.env.VITE_API_URL}/chat/delete/${chatId}`,{
-                headers: {
-                    Authorization: `Bearer ${token}`
-                    }
-               }
+               await axios.delete(`${import.meta.env.VITE_API_URL}/chat/delete/${chatId}`
           
                );
     

@@ -78,9 +78,6 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
 
       
       try {
-        
-        const token = localStorage.getItem('token')
-        console.log(token)
 
 
         const respon = await axios.post(import.meta.env.VITE_API_URL, 
@@ -89,11 +86,6 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
         content: textval,
         conversationId:id
 
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
       }
     )
 
@@ -112,6 +104,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       }
         
       } catch (error) {
+        toast.error(error.message)
         console.log(error.message)
 
         toast.error(error.response.data.message)

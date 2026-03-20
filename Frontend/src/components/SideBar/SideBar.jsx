@@ -52,13 +52,12 @@ function SideBar({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     axios
-      .get(`${import.meta.env.VITE_API_URL}/titles`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(`${import.meta.env.VITE_API_URL}/titles`, 
+  {
+    withCredentials: true // 🔥 MOST IMPORTANT
+  }
+      )
       .then((res) => {
         const array = res.data.titles;
         const UserData = res.data.User;

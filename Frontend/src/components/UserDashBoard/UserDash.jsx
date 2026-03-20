@@ -4,6 +4,7 @@ import { UserCont } from '@/context/UserContext'
 import clsx from 'clsx'
 import CatLoading from '../CatAnimate/CatLoading'
 import { Camera } from 'lucide-react'
+import { toast } from 'react-toastify'
 
 function UserDash() {
 
@@ -25,22 +26,19 @@ function UserDash() {
             formData.append('image', imgState)
         }
         formData.append('updatedname', Input) 
-        const token = localStorage.getItem('token')
+        
         setLoading(true)
             try {
-                const response =  await axios.post(`${import.meta.env.VITE_API_URL}/user/dashboard`,formData, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
+                const response =  await axios.post(`${import.meta.env.VITE_API_URL}/user/dashboard`,formData)
                 setHideUserDashBoard(false)
 
-                console.log(response)
+           
                 setState(response.data.checkAvatar)
 
                 setRefreshUser(!refreshUser)
 
             } catch (error) {
+                toast.error(error.message)
                 console.log(error.message)
             } finally{
                 setLoading(false)
@@ -65,11 +63,8 @@ function UserDash() {
 
     useEffect(() => {
         const fun = async () =>{
-            const token = localStorage.getItem('token')
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/dashboard`, {
-                headers: { Authorization: `Bearer ${token}` }
-                })
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/dashboard`)
 
                 setState(res.data.user)
 

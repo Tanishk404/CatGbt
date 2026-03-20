@@ -3,11 +3,12 @@ import {  DeleteChat, GetHome,  GetTitles, HandelDefaultRoute, RenameTitle}  fro
 import { VerifyToken } from "../middleware/AuthMiddleware.js";
 import { upload } from '../middleware/multer.js'
 export const RoutesAll = Router()
-import { Login, SignUp } from '../controllers/auth.js'
+import { Login, SignUp, LogOut } from '../controllers/auth.js'
 import { GetUserDashboard, UserDashBoard } from "../controllers/userdashboard.js";
 
 RoutesAll.post("/user/signup", SignUp);
 RoutesAll.post("/user/login", Login);
+RoutesAll.post("/user/logout", LogOut);
 
 RoutesAll.get("/chat/:id", VerifyToken,  HandelDefaultRoute);
 RoutesAll.get("/titles", VerifyToken, GetTitles);
