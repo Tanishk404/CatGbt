@@ -32,7 +32,7 @@ function Login() {
     const FormHandle = async (e) => {
       e.preventDefault()
       setLoading(true)
-      toast.success('Sign up successfully')
+      
       try {
         
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, currentState)
