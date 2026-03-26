@@ -104,7 +104,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       }
         
       } catch (error) {
-        toast.error(error.message)
+
         console.log(error.message)
 
         toast.error(error.response.data.message)

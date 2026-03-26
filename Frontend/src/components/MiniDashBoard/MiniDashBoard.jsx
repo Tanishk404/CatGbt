@@ -34,9 +34,9 @@ function MiniDashBoard({dashBoard, setDashBoard,setTitles}) {
             const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/logout`)
        
             toast.success(res.data.message)
-            setTimeout(() => {
-                navigate("/user/login");
-            },1000)
+           
+                navigate(`/user/login`);
+          
 
         } catch (error) {
             toast.error(error.message)

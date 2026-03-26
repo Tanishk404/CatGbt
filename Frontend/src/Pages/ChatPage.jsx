@@ -166,7 +166,7 @@ function ChatPage() {
 
                       {
             isLoading&&(
-              <div className="h-auto rounded-tl-xl rounded-bl-xl rounded-br-xl p-2 mb-10 w-full text-start">
+              <div className="h-auto rounded-tl-xl rounded-bl-xl rounded-br-xl p-2 mb-10 w-full text-start xl:max-w-[50rem] xl:items-center">
                   <CatLoading />
               </div>
             )

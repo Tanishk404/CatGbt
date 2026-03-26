@@ -8,12 +8,15 @@ import { useState } from 'react'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import CatLoading from '@/components/CatAnimate/CatLoading'
 function Login() {
     const [show, setShowPass] = useState(false)
     const [currentState, setState] = useState({
       emailid: '',
       password: ''
     })
+
+      const [isLoading, setLoading] = useState(null)
 
     const navigate = useNavigate()
 
@@ -28,6 +31,8 @@ function Login() {
 
     const FormHandle = async (e) => {
       e.preventDefault()
+      setLoading(true)
+      toast.success('Sign up successfully')
       try {
         
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, currentState)
@@ -43,6 +48,7 @@ function Login() {
           emailid: '',
           password: ''
         })
+
         
         setTimeout(() => {
           navigate("/")
@@ -56,6 +62,9 @@ function Login() {
         
         console.log(error.message);
       }
+      finally{
+        setLoading(false)
+      }
 
     }
 
@@ -65,6 +74,14 @@ function Login() {
     <Layout>
 
     <div className='w-full h-dvh flex flex-col justify-around justify-items-center items-center align-middle text-center dark:bg-[#1e1e1e] bg-[#EBE8E8] pb-20 pt-20 pr-8 pl-8 md:pt-20 lg:pb-20 '>
+
+          {
+            isLoading && 
+          <div className='absolute w-auto items-center flex justify-center z-50'>
+          <CatLoading />
+          </div>
+          }
+
         <ToastContainer></ToastContainer>
         <div className='flex border w-full ld:max-w-[70rem] md:max-w-[70rem] h-full border-gray-400 rounded-xl flex-col lg:flex-row md:flex-row relative shadow-lg shadow-orange-400'>
 

@@ -8,6 +8,7 @@ import clsx from 'clsx'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import CatLoading from '@/components/CatAnimate/CatLoading'
 function SignUp() {
   const intialState = {
     fullname: '',
@@ -19,6 +20,7 @@ function SignUp() {
 
 
   const [currentState, setState] = useState(intialState);
+  const [isLoading, setLoading] = useState(null)
 
   function onChangeHua (e){
     const {name, value} = e.target
@@ -30,12 +32,15 @@ function SignUp() {
 
   const HandleForm = async (e) => {
     e.preventDefault();
+    setLoading(true)
+
     try {
     const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/signup`, currentState)
 
 
     const successMsg = res.data.message
     toast.success(successMsg)
+    console.log(successMsg)
 
     
     setState({
@@ -49,9 +54,13 @@ function SignUp() {
     },1500)
     
     } catch (error) {
-      const errmsg = error.response.data.message || 'Something went wrong'
+      const errmsg = 'Something went wrong'
       toast.error(errmsg)
+      console.log(error)
       
+    }
+    finally{
+      setLoading(false)
     }
 
   }
@@ -61,18 +70,24 @@ function SignUp() {
 
   return (
     <Layout>
-
     <div className='w-full h-dvh flex flex-col justify-around justify-items-center items-center align-middle text-center dark:bg-[#1e1e1e] bg-[#EBE8E8] pb-20 pt-20 pr-8 pl-8 md:pt-20 lg:pb-20 '>
+      {
+        isLoading && 
+      <div className='absolute w-auto items-center flex justify-center z-50'>
+      <CatLoading />
+      </div>
+      }
+
         <ToastContainer></ToastContainer>
         <div className='flex border w-full ld:max-w-[70rem] md:max-w-[70rem] h-full border-gray-400 rounded-xl  flex-col lg:flex-row md:flex-row relative shadow-lg shadow-orange-400'>
 
         <form onSubmit={HandleForm} className=' h-full max-h-[40rem] w-full max-w-[30rem] flex flex-col gap-10 bg-inherit p-4 pt-10 flex-1 rounded-l-xl z-40'>
 
-            <input onChange={onChangeHua} value={currentState.fullname} name='fullname' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type="text" placeholder='Enter full name' />
-            <input onChange={onChangeHua} value={currentState.emailid} name='emailid' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type="email" placeholder='Enter email id' />
+            <input required={true} onChange={onChangeHua} value={currentState.fullname} name='fullname' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type="text" placeholder='Enter full name' />
+            <input required={true} onChange={onChangeHua} value={currentState.emailid} name='emailid' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type="email" placeholder='Enter email id' />
 
             <div className='flex w-full'>
-                <input onChange={onChangeHua} value={currentState.password} name='password' minLength='8' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type={show ? 'text': 'password'} placeholder='Enter you password'/>
+                <input required={true}  onChange={onChangeHua} value={currentState.password} name='password' minLength='8' className='p-4 border-b border-gray-400 bg-inherit outline-none rounded-lg' type={show ? 'text': 'password'} placeholder='Enter you password'/>
                 {
                   currentState.password.length > 0 && 
 (                <button type='button' onClick={() => {setShowPass(!show)}}>
@@ -85,9 +100,9 @@ function SignUp() {
               }
             </div>
 
-            <button type='submit' className='h-10 mt-20 rounded-lg w-full p-2 dark:hover:bg-orange-300 bg-orange-400 text-white'>Sign Up</button>
+            <button type='submit' className='h-10 mt-10 rounded-lg w-full p-2 dark:hover:bg-orange-300 bg-orange-400 text-white'>Sign Up</button>
+            <Link className='-mt-8 md:mt-0 lg:mt-0 ' to={'/user/login'} >Already have a account</Link>
 
-            <Link to={'/user/login'} >Already have a account</Link>
         
         </form>
 

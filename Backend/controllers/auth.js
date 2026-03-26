@@ -9,6 +9,8 @@ export const SignUp = async (req, res) => {
     try {
         const result = UserValidation.safeParse(req.body)
 
+        console.log(result)
+
         const {fullname, emailid, password} = result.data
 
        const hashPassword = await bcrypt.hash(password, 10)
