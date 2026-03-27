@@ -79,7 +79,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       
       try {
 
-          const tempId = id || Date.now().toString()
+          const tempId =  Date.now().toString()
 
           // Navigate immediately
           if(!id){
