@@ -53,7 +53,7 @@ function Layout({children, searchChat, setSearchChat}) {
         
         
           <div className='absolute top-96'>
-            <MiniDashBoard dashBoard={dashBoard} setDashBoard={setDashBoard} />
+            <MiniDashBoard setTitles={setTitles} dashBoard={dashBoard} setDashBoard={setDashBoard} />
 
           </div>
         
