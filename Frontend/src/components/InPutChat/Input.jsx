@@ -9,6 +9,7 @@ import { OpenImgContext } from "@/context/OpenImg";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { useTransition } from "react";
 
 function Input({ ChangeState, isLoading, setLoading, setMessage }) {
   const [textval, setTextVal] = useState("");
@@ -23,6 +24,8 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
   const [prevTranscript, setPrevTranscript] = useState("");
 
   const navigate = useNavigate()
+
+  const [isPending, startTransition] = useTransition()
    
 
   const { transcript, listening, browserSupportsSpeechRecognition } =
@@ -79,11 +82,13 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       
       try {
 
-          const tempId =  Date.now().toString()
+          const tempId = id || Date.now().toString()
 
           // Navigate immediately
           if(!id){
-            navigate(`/chat/${tempId}`)
+            startTransition(() => {
+              navigate(`/chat/${tempId}`)
+            })
           }
 
 
@@ -107,7 +112,10 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       }
 
       if(!id && respon.data.conversationId){
-        navigate(`/chat/${respon.data.conversationId}`)
+        startTransition(() => {
+          navigate(`/chat/${respon.data.conversationId}`)
+
+        })
       }
         
       } catch (error) {
