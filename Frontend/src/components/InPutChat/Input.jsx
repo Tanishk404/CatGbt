@@ -82,21 +82,21 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       
       try {
 
-          const tempId = id || Date.now().toString()
+          // const tempId = id || Date.now().toString()
 
-          // Navigate immediately
-          if(!id){
-            startTransition(() => {
-              navigate(`/chat/${tempId}`)
-            })
-          }
+          // // Navigate immediately
+          // if(!id){
+          //   startTransition(() => {
+          //     navigate(`/chat/${tempId}`)
+          //   })
+          // }
 
 
         const respon = await axios.post(import.meta.env.VITE_API_URL, 
       {
         role: "user",
         content: textval,
-        conversationId:tempId
+        conversationId:id
 
       }
     )
