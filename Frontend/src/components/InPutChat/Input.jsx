@@ -79,6 +79,13 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       
       try {
 
+          const tempId = id || Date.now().toString()
+
+          // Navigate immediately
+          if(!id){
+            navigate(`/chat/${tempId}`)
+          }
+
 
         const respon = await axios.post(import.meta.env.VITE_API_URL, 
       {
