@@ -8,7 +8,7 @@ import { GetUserDashboard, UserDashBoard } from "../controllers/userdashboard.js
 
 RoutesAll.post("/user/signup", SignUp);
 RoutesAll.post("/user/login", Login);
-RoutesAll.post("/user/logout", LogOut);
+RoutesAll.post("/user/logout",VerifyToken, LogOut);
 
 RoutesAll.get("/chat/:id", VerifyToken,  HandelDefaultRoute);
 RoutesAll.get("/titles", VerifyToken, GetTitles);
