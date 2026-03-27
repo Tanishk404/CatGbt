@@ -76,8 +76,8 @@ function Login() {
     <div className='w-full h-dvh flex flex-col justify-around justify-items-center items-center align-middle text-center dark:bg-[#1e1e1e] bg-[#EBE8E8] pb-20 pt-20 pr-8 pl-8 md:pt-20 lg:pb-20 '>
 
           {
-            isLoading && 
-          <div className='absolute w-auto items-center flex justify-center z-50'>
+            isLoading &&
+          <div className='absolute bg-black/50 h-full items-center flex justify-center z-50 top-0 w-full left-0'>
           <CatLoading />
           </div>
           }
