@@ -80,16 +80,16 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       setMessage((prev) => [...prev, userMsg])
 
       
-      const tempId = id || Date.now().toString()
-
-      // Navigate immediately
-      if(!id){
-        startTransition(() => {
-          navigate(`/chat/${tempId}`, { replace: false })
-        })
-      }
       try {
 
+          // const tempId = id || Date.now().toString()
+
+          // // Navigate immediately
+          // if(!id){
+          //   startTransition(() => {
+          //     navigate(`/chat/${tempId}`)
+          //   })
+          // }
 
 
         const respon = await axios.post(import.meta.env.VITE_API_URL, 
@@ -113,7 +113,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
 
       if(!id && respon.data.conversationId){
         startTransition(() => {
-          navigate(`/chat/${respon.data.conversationId}`, { replace: true } )
+          navigate(`/chat/${respon.data.conversationId}`)
 
         })
       }
@@ -121,6 +121,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       } catch (error) {
 
         console.log(error.message)
+
         toast.error(error.response.data.message)
         if(error.response.data.message === "Invalid token"){
           setTimeout(() => {
