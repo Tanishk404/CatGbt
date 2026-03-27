@@ -96,7 +96,7 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       {
         role: "user",
         content: textval,
-        conversationId:id
+        conversationId:tempId
 
       }
     )
