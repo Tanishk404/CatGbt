@@ -4,6 +4,7 @@ import { TitleModel } from "../models/TitleSchema.js";
 import { UserModel } from "../models/AuthSchema.js";
 import Bytez from "bytez.js";
 import cloudinary from "../config/cloudinary.js";
+import {OpenAI} from 'openai'
 
 export const HandelDefaultRoute = async (req, res) => {
   try {
@@ -35,15 +36,21 @@ export const HandelDefaultRoute = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
+
+
 export const GetHome = async (req, res) => {
   const currentUser = req.userId;
   try {
     const { content, conversationId, role } = req.body;
-
     // const file = req.files;
-
+    let AiResponse = "Sorry, I couldn't process that."
     // console.log(file)
-
     let chatTitle = null;
 
     if (!content) {
@@ -52,82 +59,153 @@ export const GetHome = async (req, res) => {
       });
     }
 
-    let convId = conversationId;
-
-    if (!convId) {
-      const key = process.env.BYTEZ_KEY;
-      const sdk = new Bytez(key);
-      const model = sdk.model("openai/gpt-4o-mini");
-      const { error, output } = await model.run([
-        {
-          role: "user",
-          content: `Create a short chat title (max 5 words) from this message:\n${content}\nOnly return the title without quotes.`,
-        },
-      ]);
-      console.log(output);
-      const newconversationalId = await TitleModel.create({
-        userId: req.userId,
-        title: output ? output.content.substring(0, 30) : "new chat",
-      });
-
-      convId = newconversationalId._id;
-    }
-
-    await Conversationmodel.create({
-      conversationId: convId,
-      role: role,
-      content: content,
-    });
 
     // const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
 
     //   const response = await ai.models.generateContent({
     //     model: 'gemini-2.5-flash',
-    //     contents: {
-    //         chattitle: 'create a short title for ai and user chat',
-    //         content,
+    //     contents: content,
 
-    //     },
+      
     //   });
     //   const AiResponse = response.text;
 
-    const key = process.env.BYTEZ_KEY;
-    const sdk = new Bytez(key);
 
-    // choose gpt-4o-mini
-    const model = sdk.model("openai/gpt-4o-mini");
+    
+    const openRouterClient = new OpenAI({
+      baseURL: process.env.BASE_URL, 
+      apiKey: process.env.OPENROUTER_API_KEY,  
+    });
+    
+    try {
+      const completion = await openRouterClient.chat.completions.create({
+        model: 'google/gemini-2.5-flash',
+        max_tokens: 1000,                
+        messages: [
+          {
+            role: 'user',
+            content: content,
+          },
+        ],
+      });
+      
+      AiResponse = completion.choices[0].message.content;
+      console.log(completion.choices[0].message.content);
+    } catch (error) {
+      console.error("OpenRouter Error:", error.message);
+    }
+    
 
-    // send input to model
-    const { error, output } = await model.run([
-      {
-        role: "user",
-        content: content,
-      },
-    ]);
+     
+
+
+    let convId = conversationId;
+
+    // const key = process.env.BYTEZ_KEY;
+    // const sdk = new Bytez(key);
+
+    // // choose gpt-4o-mini
+    // const model = sdk.model("mistralai/Mistral-7B-Instruct-v0.3");
+
+    // // send input to model
+    // const { error, output } = await model.run([
+    //   {
+    //     role: "user",
+    //     content: content,
+    //   },
+    // ]);
+
+    // console.log("Model Output:", output, "Model Error:", error);
+
+  //   if(!output || !output.content){ 
+  //     return res.status(404).json({
+  //     message: 'Today request quota exceed'
+  //   })
+  // }
+
+    if (!convId) {
+      // const key = process.env.BYTEZ_KEY;
+      // const sdk = new Bytez(key);
+      // const model = sdk.model("mistralai/Mistral-7B-Instruct-v0.3");
+      // const { error, output } = await model.run([
+      //   {
+      //     role: "user",
+      //     content: `Create a short chat title (max 5 words) from this message:\n${content}\nOnly return the title without quotes.`,
+      //   },
+      // ]);
+      // console.log(output);
+
+          const openRouterClient = new OpenAI({
+      baseURL: process.env.BASE_URL, 
+      apiKey: process.env.OPENROUTER_API_KEY,  
+    });
+
+    let title = 'new chat'
+
+    try {
+      const completion = await openRouterClient.chat.completions.create({
+        model: 'google/gemini-2.5-flash',
+        max_tokens: 1000,                
+        messages: [
+          {
+            role: 'user',
+            content: `Create a short chat title (max 5 words) from this message:\n${content}\nOnly return the title without quotes.`,
+          },
+        ],
+      });
+      
+      title = completion.choices[0].message.content;
+      console.log(completion.choices[0].message.content);
+    } catch (error) {
+      console.error("OpenRouter Error:", error.message);
+    }
+
+      
+      const newconversationalId = await TitleModel.create({
+        userId: req.userId,
+        title: title || content.substring(0,30),
+      });
+
+      convId = newconversationalId._id;
+
+    }
+  
+
+    await Conversationmodel.create({
+      conversationId: convId,
+      role: role || 'user',
+      content: content,
+    });
+
+
+
+    // const AiResponse = output.content;
 
     await Conversationmodel.create({
       conversationId: convId,
       role: "assistant",
-      content: output.content,
+      content: AiResponse,
     });
 
-    const AiResponse = output.content;
 
-   
-
-    res.status(200).json({
+    return res.status(200).json({
       data: AiResponse,
       message: "Get From Backend",
       conversationId: convId,
     });
-  } catch (error) {
- 
 
+  } catch (error) {
+    console.log(error)
     res.status(400).json({
-      message: "Today request quota exceed",
+      message: "An error occurred w+hile processing your request",
     });
   }
+
+
+
 };
+
+
 
 export const GetTitles = async (req, res) => {
   const userID = req.userId;

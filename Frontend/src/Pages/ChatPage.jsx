@@ -60,7 +60,7 @@ function ChatPage() {
   
 
   useEffect(() => {
-    if(!id) return;
+    if (!id || id.startsWith("temp_")) return;
 
     const functionMessages = async () => {
         try {

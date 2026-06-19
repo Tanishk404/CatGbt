@@ -69,8 +69,11 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
 
   const HandlUserSubmit = async (e) => {
       e.preventDefault();
+      if(!textval.trim()) return;
+
       setLoading(true)
       setTextVal('')
+  
       const userMsg = {
         _id: Date.now().toString(),
         role: "user",
@@ -79,25 +82,21 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
 
       setMessage((prev) => [...prev, userMsg])
 
-      
+      const tempId = id || Date.now().toString()
+
+      // Navigate immediately
+      if(!id){
+        startTransition(() => {
+          navigate(`/chat/temp_${tempId}`)
+        })
+      }
       try {
-
-          // const tempId = id || Date.now().toString()
-
-          // // Navigate immediately
-          // if(!id){
-          //   startTransition(() => {
-          //     navigate(`/chat/${tempId}`)
-          //   })
-          // }
-
 
         const respon = await axios.post(import.meta.env.VITE_API_URL, 
       {
         role: "user",
         content: textval,
-        conversationId:id
-
+        conversationId: id  
       }
     )
 
@@ -121,12 +120,12 @@ function Input({ ChangeState, isLoading, setLoading, setMessage }) {
       } catch (error) {
 
         console.log(error.message)
-
-        toast.error(error.response.data.message)
-        if(error.response.data.message === "Invalid token"){
+        const errorMessage = error.response?.data?.message || error.message || "Something went wrong!";
+        toast.error(errorMessage);
+        if(error.response.data.message === "No login token provided"){
           setTimeout(() => {
             navigate("/user/login")
-          }, 1500);
+          }, 1000);
 
         }
 

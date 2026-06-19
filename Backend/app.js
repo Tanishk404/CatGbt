@@ -5,7 +5,7 @@ import { RoutesAll } from "./routes/route.js";
 import cors from 'cors'
 import { DataBaseConnection } from "./config/DBConnection.js";
 import cookieParser from 'cookie-parser';
-
+import { OpenAI } from 'openai';
 
 
 const app = express();
@@ -13,13 +13,17 @@ const PORT = 3000;
 
 app.use(cookieParser())
 app.use(cors({
-    origin: 'https://cat-gbt-xhx7.vercel.app',
+    origin: 'http://localhost:8080',
     credentials: true
 }));
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.use(RoutesAll);
+
+
+
+
 
 
 

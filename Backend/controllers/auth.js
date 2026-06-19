@@ -51,9 +51,9 @@ export const Login = async (req, res) => {
         const findUser = await UserModel.findOne({email:emailid}).select('+password')
 
         if(!findUser){
-            console.log('Email id is not regisetred 🔴')
+            console.log('Email id is not registred 🔴')
            return res.status(404).json({
-            message: 'This emailid is not regesetred'
+            message: 'This emailid is not registred'
         })
         }
 
@@ -61,7 +61,7 @@ export const Login = async (req, res) => {
         if(!isMatch){
             console.log('Invalid credentials 🔴')
             return res.status(404).json({
-                message: 'Invalid password'
+                message: 'Invalid credentials'
             }
         )
         }
